@@ -1,0 +1,36 @@
+{
+  "projeAdi" : "borsaverialma",
+  "girisSinifi" : "com.kmk.altyapi.borsaverialma.BorsaverialmaApplication",
+  "sinifAdi" : "BorsaverialmaApplication",
+  "baslangicNoktalari" : [ {
+    "id" : "ep_1",
+    "tur" : "MAIN",
+    "metod" : "main",
+    "imza" : "main(String[])",
+    "satir" : 9,
+    "akis" : {
+      "sinifFqn" : "com.kmk.altyapi.borsaverialma.BorsaverialmaApplication",
+      "sinifAdi" : "BorsaverialmaApplication",
+      "metod" : "main",
+      "imza" : "main(String[])",
+      "stereotip" : "main",
+      "satir" : 9,
+      "adimlar" : [ {
+        "adim" : 1,
+        "satir" : 10,
+        "tur" : "call",
+        "nesne" : "SpringApplication",
+        "hedefSinif" : "org.springframework.boot.SpringApplication",
+        "metod" : "run",
+        "argumanlar" : [ "BorsaverialmaApplication.class", "args" ],
+        "projeIci" : false,
+        "disBagimlilik" : {
+          "jar" : "spring-boot-4.0.1.jar",
+          "imza" : "run(Class, String[])",
+          "donusTipi" : "ConfigurableApplicationContext",
+          "statik" : true
+        }
+      } ]
+    }
+  } ]
+}

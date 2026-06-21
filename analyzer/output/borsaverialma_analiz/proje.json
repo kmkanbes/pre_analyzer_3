@@ -1,0 +1,99 @@
+{
+  "projeAdi" : "borsaverialma",
+  "kokDizin" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma",
+  "analizZamani" : "2026-06-13T11:29:24.5656264",
+  "derleme" : {
+    "arac" : "gradle",
+    "grupId" : "com.kmk.altyapi",
+    "artifactId" : "borsaverialma",
+    "surum" : "0.0.1-SNAPSHOT",
+    "paketleme" : "jar",
+    "nihaiArtifact" : "borsaverialma-0.0.1-SNAPSHOT.jar",
+    "javaSurumu" : "21",
+    "cokModullu" : false,
+    "bagimliliklar" : [ {
+      "grupId" : "org.springframework.boot",
+      "artifactId" : "spring-boot-starter-web"
+    }, {
+      "grupId" : "org.springframework.boot",
+      "artifactId" : "spring-boot-starter-validation"
+    }, {
+      "grupId" : "org.springframework.boot",
+      "artifactId" : "spring-boot-starter-webflux"
+    }, {
+      "grupId" : "org.springframework",
+      "artifactId" : "spring-webflux"
+    }, {
+      "grupId" : "org.seleniumhq.selenium",
+      "artifactId" : "selenium-java",
+      "surum" : "4.23.0"
+    }, {
+      "grupId" : "io.github.bonigarcia",
+      "artifactId" : "webdrivermanager",
+      "surum" : "5.9.2"
+    }, {
+      "grupId" : "org.jsoup",
+      "artifactId" : "jsoup",
+      "surum" : "1.17.2"
+    }, {
+      "grupId" : "org.projectlombok",
+      "artifactId" : "lombok"
+    }, {
+      "grupId" : "org.projectlombok",
+      "artifactId" : "lombok"
+    }, {
+      "grupId" : "org.springframework.boot",
+      "artifactId" : "spring-boot-starter-test",
+      "kapsam" : "test"
+    } ]
+  },
+  "cerceve" : {
+    "birincilCerceve" : "spring-boot",
+    "yiginlar" : [ "spring-boot" ],
+    "springBoot" : true,
+    "springBootSurumu" : "4.0.1",
+    "spring" : true,
+    "quarkus" : false,
+    "jakartaEe" : false,
+    "jaxrs" : false,
+    "servletApi" : false,
+    "cdi" : false,
+    "ejb" : false,
+    "paketleme" : "jar",
+    "servletInitializer" : false,
+    "webXmlVar" : false,
+    "starterlar" : [ "spring-boot-starter-web", "spring-boot-starter-validation", "spring-boot-starter-webflux", "spring-boot-starter-test" ],
+    "ozellikler" : [ "web (Spring MVC)", "validation", "webflux (reaktif)", "lombok" ],
+    "sunucuPort" : "9292",
+    "uygulamaAdi" : "borsaverialma",
+    "anaSinif" : "com.kmk.altyapi.borsaverialma.BorsaverialmaApplication"
+  },
+  "moduller" : [ {
+    "ad" : "borsaverialma",
+    "yol" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma",
+    "paketleme" : "jar",
+    "kaynakKokleri" : [ "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java" ],
+    "kaynakDosyaKokleri" : [ "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\resources" ]
+  } ],
+  "katmanlar" : {
+    "anaSinif" : [ "com.kmk.altyapi.borsaverialma.BorsaverialmaApplication" ],
+    "servisler" : [ "com.kmk.altyapi.borsaverialma.business.HtmlFetcher", "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService", "com.kmk.altyapi.borsaverialma.business.MenkulScraperService", "com.kmk.altyapi.borsaverialma.business.UzmanParaService" ],
+    "yapilandirmalar" : [ "com.kmk.altyapi.borsaverialma.config.WebClientConfig" ],
+    "denetleyiciler" : [ "com.kmk.altyapi.borsaverialma.controller.MenkulController", "com.kmk.altyapi.borsaverialma.controller.MenkulDetayController", "com.kmk.altyapi.borsaverialma.controller.UzmanParaController" ],
+    "model" : [ "com.kmk.altyapi.borsaverialma.model.Fundamental", "com.kmk.altyapi.borsaverialma.model.GeneralInfo", "com.kmk.altyapi.borsaverialma.model.RowData", "com.kmk.altyapi.borsaverialma.model.Seans", "com.kmk.altyapi.borsaverialma.model.StockDetail", "com.kmk.altyapi.borsaverialma.model.TechnicalAnalysis", "com.kmk.altyapi.borsaverialma.model.UzmanParaHisse", "com.kmk.altyapi.borsaverialma.model.UzmanParaHisseDetay", "com.kmk.altyapi.borsaverialma.model.UzmanParaHisseListObj" ],
+    "veriNesneleri" : [ "com.kmk.altyapi.borsaverialma.model.UzmanParaDetayReq" ]
+  },
+  "uygulamaKonfig" : {
+    "scrape.cron" : "0 */5 9-18 ? * MON-FRI",
+    "spring.application.name" : "borsaverialma",
+    "scrape.headingText" : "Menkul Fiyat Zaman",
+    "spring.codec.max-in-memory-size" : "50MB",
+    "scrape.outputCsv" : "./data/menkul_fiyat_zaman.csv",
+    "server.port" : "9292",
+    "scrape.headless" : "true",
+    "scrape.timeoutSeconds" : "20",
+    "logging.level.com.example.scraper" : "INFO",
+    "scrape.url" : "https://.../menkul-fiyat-zaman",
+    "logging.level.root" : "INFO"
+  }
+}

@@ -1,0 +1,20 @@
+
+java backend projelerini analiz eden bir sistem isteniyor.
+java projesi hangi alt yapıya sahip olursa olsun anlaşılabilmeli.
+yapılan analiz ile tespit edilenler bir nesneye doldurulmalıdır.
+projenin graph çıkarılmaya çalışmalıdır.
+graph içerikleri yani kullanılan değişkenler Türkçe isimlendirilsin.
+projenin altyapısı genel bağımlılıkları proje.json dosyasına kaydedilsin.
+projenin altyapısı için paket yapısı varsa meven gradle vb kaydedilmeli.
+projenin altyapısı için dependencyler çıkarılmalı.
+projenin ilk başlangıç noktaları baslangic_noktalari isimli json dosyası altına kaydedilsin.
+projenin ilk başlangıç noktaları method isimleri giriş türü controller vb yazılmalı.
+baslangic_noktalari isimli jsonda methodlar için detaylı akış analizi yapılmalıdır.
+projenin ilk başlangıç noktaları için akışda adım adım kural varsa kural yazılmalı. method çağrımı varsa nereyi çağırdığı yazılmalı.
+projenin ilk başlangıç noktaları method hangi dependency leri gerektirdiği yazılmalı.
+baslangic_noktaları bulunan methodların çağırdığı alt methodlar proje içinde java dosyası olarak olmasa bile projenin jar veya war içeriğinden bulunmalıdır.
+projede .java uzantılı dosyalar siniflar.json kaydedilmelidir.
+sınıflar.json için sınıf method özellikleri yazılmalıdır.
+sınıflar.json için daha yalın bir çağrım graph hazırlanmalıdır. sadece hangi class hangi method çağırdığı kural varsa ne kuralı olduğu yeterlidir.
+ortaya çıkan json lar llm ler için kaynaklık teşkil edecektir.
+aklında netleşmesi gereken bir şey olursa mutlaka sor.

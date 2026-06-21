@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-Analyzer Raporu</title>
+<style>
+  :root {
+    --bg: #0f1419; --panel: #1a2129; --panel2: #212b36; --border: #2d3a47;
+    --text: #d8e1ea; --muted: #8a9bab; --accent: #4fc3f7;
+    --controller: #42a5f5; --service: #66bb6a; --repository: #ffa726;
+    --model: #ab47bc; --config: #78909c; --scheduler: #ec407a;
+    --external: #ef5350; --main: #ffee58; --other: #90a4ae;
+    --db: #ffa726; --http: #ef5350; --kafka: #26c6da; --queue: #26c6da; --mail: #9ccc65;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; }
+  header { padding: 18px 28px 0; }
+  h1 { font-size: 22px; font-weight: 600; }
+  h1 .sub { color: var(--muted); font-size: 13px; font-weight: 400; margin-left: 10px; }
+  .badges { margin: 10px 0 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge { background: var(--panel2); border: 1px solid var(--border); border-radius: 20px;
+           padding: 4px 14px; font-size: 12.5px; }
+  .badge b { color: var(--accent); font-weight: 600; }
+  .badge.war b { color: var(--repository); }
+  nav { display: flex; gap: 4px; padding: 0 28px; border-bottom: 1px solid var(--border); }
+  nav button { background: none; border: none; color: var(--muted); padding: 10px 18px; cursor: pointer;
+               font-size: 14px; border-bottom: 2px solid transparent; font-family: inherit; }
+  nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
+  nav button:hover { color: var(--text); }
+  main { padding: 20px 28px 60px; }
+  .tab { display: none; }
+  .tab.active { display: block; }
+
+  /* kartlar */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .card h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 12px; }
+  .kv { display: grid; grid-template-columns: 150px 1fr; gap: 5px 12px; font-size: 13px; }
+  .kv .k { color: var(--muted); }
+  .kv .v { word-break: break-all; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { background: var(--panel2); border: 1px solid var(--border); border-radius: 5px;
+          padding: 3px 9px; font-size: 12px; }
+  .pipeline { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 6px; font-size: 13px; }
+  .pipeline .stage { background: var(--panel2); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; }
+  .pipeline .stage.hl { border-color: var(--accent); color: var(--accent); }
+  .pipeline .arr { color: var(--muted); }
+  .statgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+  .stat { background: var(--panel2); border-radius: 8px; padding: 10px; text-align: center; }
+  .stat .num { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat .lbl { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  details.cfg { margin-top: 10px; }
+  details.cfg summary { cursor: pointer; color: var(--muted); font-size: 12.5px; }
+  table.cfgtab { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12.5px; }
+  table.cfgtab td { border-bottom: 1px solid var(--border); padding: 4px 8px; word-break: break-all; }
+  table.cfgtab td:first-child { color: var(--muted); white-space: nowrap; }
+
+  /* svg grafikler */
+  .graphwrap { background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+               overflow: hidden; position: relative; }
+  .graphwrap svg { display: block; cursor: grab; }
+  .graphwrap svg:active { cursor: grabbing; }
+  .graph-hint { position: absolute; top: 10px; right: 14px; color: var(--muted); font-size: 11.5px; pointer-events: none; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 10px 2px; font-size: 12px; color: var(--muted); }
+  .legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 3px;
+                         margin-right: 5px; background: var(--c); vertical-align: -1px; }
+  .node-box { rx: 6; stroke-width: 1.4; cursor: pointer; }
+  .edge { fill: none; stroke: #46586a; stroke-width: 1.3; opacity: .55; marker-end: url(#arrow); }
+  .edge.hl { stroke: var(--accent); opacity: 1; stroke-width: 2; }
+  .edge.faded, .nodeg.faded { opacity: .12; }
+  text.nlabel { fill: var(--text); font-size: 12px; pointer-events: none; }
+  text.nsub { fill: var(--muted); font-size: 10px; pointer-events: none; }
+  text.coltitle { fill: var(--muted); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+
+  /* giris noktalari */
+  .ep-group h3 { margin: 18px 0 8px; font-size: 15px; color: var(--accent); }
+  .ep { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; }
+  .ep-head { padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .ep-head:hover { background: var(--panel2); }
+  .mth { font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 4px; color: #08111a; }
+  .mth.GET { background: #66bb6a; } .mth.POST { background: #42a5f5; } .mth.PUT { background: #ffa726; }
+  .mth.DELETE { background: #ef5350; } .mth.PATCH { background: #ab47bc; }
+  .mth.SCHEDULED { background: #ec407a; } .mth.KAFKA { background: #26c6da; }
+  .mth.MAIN { background: #ffee58; } .mth.RUNNER { background: #9ccc65; } .mth.EVENT { background: #78909c; }
+  .mth.SERVLET { background: #5c6bc0; } .mth.FILTER { background: #8d6e63; } .mth.LISTENER { background: #b0bec5; }
+  .mth.JMS { background: #00acc1; } .mth.MESSAGING { background: #26a69a; } .mth.HEAD, .mth.OPTIONS, .mth.TRACE { background: #90a4ae; }
+  .ep-path { font-family: Consolas, monospace; font-size: 13.5px; }
+  .ep-src { color: var(--muted); font-size: 12px; margin-left: auto; }
+  .ep-body { display: none; border-top: 1px solid var(--border); padding: 12px 16px; }
+  .ep.open .ep-body { display: block; }
+
+  /* akis agaci */
+  .trace { font-family: Consolas, 'Courier New', monospace; font-size: 12.8px; line-height: 1.85; }
+  .tn { border-left: 2px solid var(--border); margin-left: 6px; padding-left: 14px; }
+  .tn-head { color: var(--muted); font-size: 11.5px; margin: 2px 0; }
+  .tn-head .cls { color: var(--text); font-weight: 600; }
+  .st { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .st .ln { color: #5a6b7a; font-size: 10.5px; min-width: 38px; text-align: right; }
+  .st .ico { width: 16px; text-align: center; }
+  .st.dim { opacity: .45; }
+  .st .obj { color: var(--accent); }
+  .st .met { color: #ffd54f; }
+  .st .asgn { color: var(--muted); }
+  .st .cond { color: #ce93d8; }
+  .ctx { font-size: 10px; padding: 1px 6px; border-radius: 3px; background: var(--panel2);
+         border: 1px solid var(--border); color: var(--muted); }
+  .bnd { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 3px; color: #08111a; }
+  .bnd.db { background: var(--db); } .bnd.http { background: var(--http); }
+  .bnd.kafka { background: var(--kafka); } .bnd.mail { background: var(--mail); } .bnd.queue { background: var(--queue); }
+  .stx { font-size: 10px; padding: 1px 6px; border-radius: 3px; background: var(--panel2); border: 1px solid var(--border); }
+  .expander { cursor: pointer; color: var(--accent); user-select: none; font-size: 11px; }
+  .callee { display: none; }
+  .callee.open { display: block; }
+  .cyc { color: var(--external); font-size: 11px; }
+
+  select, .toolbar input { background: var(--panel2); color: var(--text); border: 1px solid var(--border);
+           border-radius: 6px; padding: 6px 10px; font-size: 13px; font-family: inherit; }
+  .toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+  .toolbar label { color: var(--muted); font-size: 12.5px; }
+  .empty { color: var(--muted); padding: 30px; text-align: center; }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title"></h1>
+  <div class="badges" id="badges"></div>
+</header>
+<nav id="tabs">
+  <button data-tab="overview" class="active">Genel Bakış</button>
+  <button data-tab="kroki">Kroki</button>
+  <button data-tab="entries">Giriş Noktaları &amp; Akışlar</button>
+  <button data-tab="graph">Çağrı Grafiği</button>
+</nav>
+<main>
+  <section id="tab-overview" class="tab active"></section>
+  <section id="tab-kroki" class="tab"></section>
+  <section id="tab-entries" class="tab"></section>
+  <section id="tab-graph" class="tab"></section>
+</main>
+
+<script id="data" type="application/json">
+"__DATA_JSON__"
+</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+
+const STC = { controller:'var(--controller)', advice:'var(--controller)', service:'var(--service)',
+  repository:'var(--repository)', httpclient:'var(--http)', entity:'var(--model)', dto:'var(--model)',
+  model:'var(--model)', config:'var(--config)', scheduler:'var(--scheduler)', listener:'var(--scheduler)',
+  servlet:'var(--controller)', filter:'var(--scheduler)',
+  component:'var(--service)', main:'var(--main)', external:'var(--external)', util:'var(--other)',
+  exception:'var(--other)', other:'var(--other)' };
+const STN = { controller:'Controller', service:'Service', repository:'Repository', httpclient:'HTTP Client',
+  entity:'Entity', dto:'DTO', model:'Model', config:'Config', scheduler:'Scheduler', listener:'Listener',
+  servlet:'Servlet', filter:'Filter',
+  component:'Component', main:'Main', advice:'Advice', util:'Util', exception:'Exception', external:'Harici', other:'Diğer' };
+const FWN = { 'spring-boot':'Spring Boot', 'spring':'Spring', 'quarkus':'Quarkus',
+  'jakarta-ee':'Jakarta EE', 'jax-rs':'JAX-RS', 'servlet':'Servlet / Java Web',
+  'java-se':'Java SE', 'java':'Java' };
+
+function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function simple(fqn){ if(!fqn) return ''; const i = fqn.lastIndexOf('.'); return i>=0 ? fqn.slice(i+1) : fqn; }
+function stColor(st){ return STC[st] || STC.other; }
+
+/* ---------- sekmeler ---------- */
+document.getElementById('tabs').addEventListener('click', e => {
+  const btn = e.target.closest('button'); if (!btn) return;
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + btn.dataset.tab));
+});
+
+/* ---------- başlık + rozetler ---------- */
+(function header(){
+  const fw = DATA.framework, b = DATA.build;
+  document.getElementById('title').innerHTML =
+    esc(DATA.projectName) + '<span class="sub">' + esc(DATA.rootPath) + ' · ' + esc(DATA.analyzedAt) + '</span>';
+  const badges = [];
+  const fwVer = fw.springBoot ? (fw.springBootVersion||'') : (fw.quarkus ? (fw.quarkusVersion||'') : '');
+  if (fw.primaryFramework) badges.push((FWN[fw.primaryFramework]||fw.primaryFramework) + (fwVer ? ' <b>' + esc(fwVer) + '</b>' : ''));
+  (fw.stacks||[]).filter(s => s !== fw.primaryFramework).forEach(s => badges.push('<span style="opacity:.85">' + esc(FWN[s]||s) + '</span>'));
+  if (b.javaVersion) badges.push('Java <b>' + esc(b.javaVersion) + '</b>');
+  badges.push('Build <b>' + esc(b.tool || '?') + '</b>');
+  badges.push('<span class="' + (b.packaging==='war'?'war':'') + '">Paket <b>' + esc((b.packaging||'jar').toUpperCase()) + '</b></span>');
+  if (b.multiModule) badges.push('<b>çok modüllü</b>');
+  badges.push('Sınıf <b>' + DATA.classes.length + '</b>');
+  badges.push('Giriş noktası <b>' + DATA.entryPoints.length + '</b>');
+  document.getElementById('badges').innerHTML = badges.map(x => '<div class="badge">' + x + '</div>').join('');
+})();
+
+/* ---------- Genel Bakış ---------- */
+(function overview(){
+  const fw = DATA.framework, b = DATA.build, cfg = DATA.appConfig || {};
+  const el = document.getElementById('tab-overview');
+
+  const isWar = b.packaging === 'war';
+  const pipe = ['<span class="stage">Kaynak kod</span>','<span class="arr">→</span>',
+    '<span class="stage">' + esc(b.tool === 'gradle' ? 'gradle build' : 'mvn package') + '</span>',
+    '<span class="arr">→</span>',
+    '<span class="stage hl">' + esc(b.finalArtifact || ('app.' + (b.packaging||'jar'))) + '</span>',
+    '<span class="arr">→</span>',
+    isWar ? '<span class="stage">Servlet container (Tomcat/WebSphere) deploy</span>'
+          : '<span class="stage">java -jar (gömülü sunucu)</span>'].join('');
+
+  const stCounts = {};
+  DATA.classes.forEach(c => stCounts[c.stereotype] = (stCounts[c.stereotype]||0)+1);
+  const methodCount = DATA.classes.reduce((a,c) => a + c.methods.length, 0);
+  const restCount = DATA.entryPoints.filter(e => e.kind==='REST'||e.kind==='JAXRS'||e.kind==='SERVLET').length;
+  const schedCount = DATA.entryPoints.filter(e => e.kind==='SCHEDULED').length;
+
+  const warNotes = [];
+  if (isWar) {
+    if (fw.springBoot) {
+      warNotes.push(fw.servletInitializer
+        ? 'SpringBootServletInitializer mevcut — WAR harici servlet container\'a deploy edilebilir.'
+        : '⚠ SpringBootServletInitializer bulunamadı — harici container deploy\'u için gerekebilir.');
+    } else {
+      warNotes.push('Servlet container\'a (Tomcat/WebSphere/JBoss) deploy edilen klasik WAR.');
+    }
+    if (fw.hasWebXml) warNotes.push('web.xml mevcut (klasik servlet yapılandırması).');
+    else if (fw.servletApi) warNotes.push('web.xml yok — anotasyon tabanlı (@WebServlet/@WebFilter) yapılandırma.');
+  }
+
+  el.innerHTML = `
+  <div class="card" style="margin-bottom:16px">
+    <h3>Derleme &amp; Çalıştırma Zinciri</h3>
+    <div class="pipeline">${pipe}</div>
+    ${warNotes.map(n => '<div style="margin-top:8px;color:var(--muted);font-size:12.5px">' + esc(n) + '</div>').join('')}
+  </div>
+  <div class="cards">
+    <div class="card"><h3>Framework Künyesi</h3>
+      <div class="kv">
+        <span class="k">Framework</span><span class="v">${esc((FWN[fw.primaryFramework]||fw.primaryFramework||'belirlenemedi')) + (fw.springBoot && fw.springBootVersion ? ' ' + esc(fw.springBootVersion) : (fw.quarkus && fw.quarkusVersion ? ' ' + esc(fw.quarkusVersion) : ''))}</span>
+        <span class="k">Yığınlar</span><span class="v">${(fw.stacks&&fw.stacks.length) ? esc(fw.stacks.join(', ')) : '-'}</span>
+        <span class="k">Ana sınıf</span><span class="v">${esc(fw.mainClass || '-')}</span>
+        <span class="k">Koordinat</span><span class="v">${esc([b.groupId,b.artifactId,b.version].filter(Boolean).join(' : ') || '-')}</span>
+      </div>
+      ${fw.starters.length ? '<div style="margin-top:10px"><div class="k" style="color:var(--muted);font-size:12px;margin-bottom:5px">Starter\'lar</div><div class="chips">' +
+        fw.starters.map(s => '<span class="chip">' + esc(s.replace('spring-boot-starter-','')) + '</span>').join('') + '</div></div>' : ''}
+      ${fw.features.length ? '<div style="margin-top:10px"><div class="k" style="color:var(--muted);font-size:12px;margin-bottom:5px">Özellikler</div><div class="chips">' +
+        fw.features.map(s => '<span class="chip">' + esc(s) + '</span>').join('') + '</div></div>' : ''}
+    </div>
+    <div class="card"><h3>Konfigürasyon</h3>
+      <div class="kv">
+        <span class="k">Uygulama adı</span><span class="v">${esc(fw.applicationName || '-')}</span>
+        <span class="k">Port</span><span class="v">${esc(fw.serverPort || '8080 (varsayılan)')}</span>
+        <span class="k">Context path</span><span class="v">${esc(fw.contextPath || '/')}</span>
+        <span class="k">Datasource</span><span class="v">${esc(fw.datasourceUrl || '-')}</span>
+      </div>
+      ${Object.keys(cfg).length ? '<details class="cfg"><summary>Tüm ayarlar (' + Object.keys(cfg).length + ')</summary><table class="cfgtab">' +
+        Object.entries(cfg).map(([k,v]) => '<tr><td>' + esc(k) + '</td><td>' + esc(v) + '</td></tr>').join('') + '</table></details>' : ''}
+    </div>
+    <div class="card"><h3>İstatistikler</h3>
+      <div class="statgrid">
+        <div class="stat"><div class="num">${DATA.classes.length}</div><div class="lbl">Sınıf</div></div>
+        <div class="stat"><div class="num">${methodCount}</div><div class="lbl">Metod</div></div>
+        <div class="stat"><div class="num">${restCount}</div><div class="lbl">HTTP Uç Noktası</div></div>
+        <div class="stat"><div class="num">${schedCount}</div><div class="lbl">Zamanlanmış İş</div></div>
+        <div class="stat"><div class="num">${DATA.callGraph.edges.length}</div><div class="lbl">Çağrı Kenarı</div></div>
+        <div class="stat"><div class="num">${(DATA.modules||[]).length}</div><div class="lbl">Modül</div></div>
+      </div>
+      <div style="margin-top:12px" class="chips">
+        ${Object.entries(stCounts).sort((a,b)=>b[1]-a[1]).map(([st,n]) =>
+          '<span class="chip" style="border-left:3px solid ' + stColor(st) + '">' + (STN[st]||st) + ': <b>' + n + '</b></span>').join('')}
+      </div>
+    </div>
+    <div class="card"><h3>Modüller &amp; Bağımlılıklar</h3>
+      ${(DATA.modules||[]).map(m => '<div style="margin-bottom:6px"><b>' + esc(m.name) + '</b> <span class="chip">' + esc(m.packaging||'') + '</span></div>').join('')}
+      <details class="cfg"><summary>Bağımlılıklar (${(b.dependencies||[]).length})</summary><table class="cfgtab">
+        ${(b.dependencies||[]).map(d => '<tr><td>' + esc(d.groupId||'') + '</td><td>' + esc(d.artifactId||'') + (d.version ? ' : ' + esc(d.version) : '') + (d.scope ? ' <span class="chip">' + esc(d.scope) + '</span>' : '') + '</td></tr>').join('')}
+      </table></details>
+    </div>
+  </div>`;
+})();
+
+/* ---------- ortak SVG yardımcıları ---------- */
+function makePanZoom(svg, viewport){
+  let scale = 1, tx = 0, ty = 0, dragging = false, lx = 0, ly = 0;
+  const apply = () => viewport.setAttribute('transform', `translate(${tx},${ty}) scale(${scale})`);
+  svg.addEventListener('wheel', e => {
+    e.preventDefault();
+    const f = e.deltaY < 0 ? 1.12 : 0.89;
+    const r = svg.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+    tx = mx - (mx - tx) * f; ty = my - (my - ty) * f; scale *= f; apply();
+  }, { passive: false });
+  svg.addEventListener('mousedown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+  window.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    tx += e.clientX - lx; ty += e.clientY - ly; lx = e.clientX; ly = e.clientY; apply();
+  });
+  window.addEventListener('mouseup', () => dragging = false);
+}
+
+function arrowDefs(){
+  return `<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 1 L 9 5 L 0 9 z" fill="#46586a"/></marker></defs>`;
+}
+
+function edgePath(x1,y1,x2,y2){
+  const mx = (x1+x2)/2;
+  return `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
+}
+
+/* ---------- Kroki ---------- */
+(function kroki(){
+  const el = document.getElementById('tab-kroki');
+  const classByFqn = {}; DATA.classes.forEach(c => classByFqn[c.fqn] = c);
+  const nodeById = {}; DATA.callGraph.nodes.forEach(n => nodeById[n.id] = n);
+
+  // sınıf düzeyi kenarlar (callGraph'tan toplanır) — classes filtresinden ÖNCE kurulmalı
+  const cEdges = new Map(); // "from|to" -> count
+  const extBoundaries = new Map(); // boundary -> Set(extClass)
+  DATA.callGraph.edges.forEach(e => {
+    const fc = e.from.split('#')[0], tcRaw = e.to.split('#')[0];
+    const toNode = nodeById[e.to];
+    if (toNode && toNode.external) {
+      if (toNode.boundary) {
+        const key = fc + '|BOUNDARY:' + toNode.boundary;
+        cEdges.set(key, (cEdges.get(key)||0)+1);
+        if (!extBoundaries.has(toNode.boundary)) extBoundaries.set(toNode.boundary, new Set());
+        extBoundaries.get(toNode.boundary).add(toNode.className);
+      } else {
+        const key = fc + '|EXT:' + tcRaw;
+        cEdges.set(key, (cEdges.get(key)||0)+1);
+      }
+      return;
+    }
+    if (fc !== tcRaw && classByFqn[fc] && classByFqn[tcRaw]) {
+      cEdges.set(fc + '|' + tcRaw, (cEdges.get(fc + '|' + tcRaw)||0)+1);
+    }
+  });
+
+  function hasEdges(fqn){
+    for (const k of cEdges.keys()){ const [f,t] = k.split('|'); if (f===fqn || t===fqn) return true; }
+    return false;
+  }
+
+  const classes = DATA.classes.filter(c => !['entity','dto','model','exception','util','config','main','other'].includes(c.stereotype) || hasEdges(c.fqn));
+
+  // BFS derinliği: giriş noktası sınıfları depth 0
+  const entryClasses = new Set(DATA.entryPoints.map(e => e.classFqn));
+  const depth = new Map();
+  entryClasses.forEach(f => { if (classByFqn[f]) depth.set(f, 0); });
+  let frontier = [...depth.keys()];
+  while (frontier.length){
+    const next = [];
+    for (const f of frontier){
+      for (const k of cEdges.keys()){
+        const [from,to] = k.split('|');
+        if (from === f && classByFqn[to] && !depth.has(to)){ depth.set(to, depth.get(f)+1); next.push(to); }
+      }
+    }
+    frontier = next;
+  }
+  // erişilemeyenler ama kenarı olanlar: depth 1'e koy
+  classes.forEach(c => { if (!depth.has(c.fqn) && hasEdges(c.fqn)) depth.set(c.fqn, 1); });
+
+  const maxDepth = Math.max(0, ...depth.values());
+  const extCol = maxDepth + 1;          // harici sınıflar (jar bağımlılıkları)
+  const boundaryCol = maxDepth + 2;     // DB / HTTP / KAFKA sınırları
+
+  // harici sınıflar
+  const extClasses = new Set();
+  for (const k of cEdges.keys()){
+    const [,t] = k.split('|');
+    if (t.startsWith('EXT:')) extClasses.add(t.slice(4));
+  }
+
+  // kolon -> kutular
+  const COLW = 280, BOXH = 46, GAPY = 14, TOP = 60;
+  const cols = [];
+  for (let d = 0; d <= maxDepth; d++){
+    cols.push(classes.filter(c => depth.get(c.fqn) === d)
+      .sort((a,b) => (a.stereotype+a.name).localeCompare(b.stereotype+b.name))
+      .map(c => ({ id: c.fqn, label: c.name, sub: STN[c.stereotype]||c.stereotype, st: c.stereotype,
+                   entry: entryClasses.has(c.fqn), methods: c.methods.length })));
+  }
+  cols.push([...extClasses].sort().map(f => ({ id: 'EXT:'+f, label: simple(f), sub: 'harici jar', st: 'external' })));
+  cols.push([...extBoundaries.keys()].map(bd => ({ id: 'BOUNDARY:'+bd, st: 'external', boundary: bd,
+      label: { db:'VERİTABANI', http:'HTTP / DIŞ API', kafka:'KAFKA', queue:'MESAJ KUYRUĞU', mail:'MAIL' }[bd] || bd.toUpperCase(),
+      sub: [...extBoundaries.get(bd)].slice(0,3).join(', ') })));
+
+  const colTitles = [];
+  for (let d = 0; d <= maxDepth; d++) colTitles.push(d === 0 ? 'GİRİŞ NOKTALARI' : 'KATMAN ' + d);
+  colTitles.push('HARİCİ KÜTÜPHANELER'); colTitles.push('DIŞ DÜNYA');
+
+  const pos = new Map();
+  let maxRows = 0;
+  cols.forEach((col,i) => {
+    maxRows = Math.max(maxRows, col.length);
+    col.forEach((n,j) => pos.set(n.id, { x: 30 + i*COLW, y: TOP + j*(BOXH+GAPY), n }));
+  });
+  const W = 60 + cols.length * COLW, H = TOP + maxRows*(BOXH+GAPY) + 40;
+
+  let svgEdges = '', svgNodes = '', svgTitles = '';
+  cols.forEach((col,i) => {
+    if (col.length) svgTitles += `<text class="coltitle" x="${30 + i*COLW}" y="${TOP-22}">${esc(colTitles[i]||'')}</text>`;
+  });
+  for (const [key,count] of cEdges){
+    const [from,to] = key.split('|');
+    const p1 = pos.get(from), p2 = pos.get(to);
+    if (!p1 || !p2) continue;
+    svgEdges += `<path class="edge" data-from="${esc(from)}" data-to="${esc(to)}"
+      d="${edgePath(p1.x+230, p1.y+BOXH/2, p2.x, p2.y+BOXH/2)}" ${count>2 ? 'stroke-width="2.2"' : ''}/>`;
+  }
+  for (const [id,p] of pos){
+    const n = p.n;
+    const color = n.boundary ? `var(--${n.boundary})` : stColor(n.st);
+    svgNodes += `<g class="nodeg" data-id="${esc(id)}">
+      <rect class="node-box" x="${p.x}" y="${p.y}" width="230" height="${BOXH}"
+        fill="var(--panel2)" stroke="${color}" ${n.entry ? 'stroke-width="2.6"' : ''} rx="6"/>
+      <rect x="${p.x}" y="${p.y}" width="5" height="${BOXH}" fill="${color}" rx="2"/>
+      <text class="nlabel" x="${p.x+14}" y="${p.y+19}">${esc(n.label.length>26 ? n.label.slice(0,25)+'…' : n.label)}</text>
+      <text class="nsub" x="${p.x+14}" y="${p.y+35}">${esc(n.sub||'')}${n.methods ? ' · ' + n.methods + ' metod' : ''}</text>
+      ${n.entry ? `<circle cx="${p.x+222}" cy="${p.y+10}" r="4" fill="var(--accent)"/>` : ''}
+    </g>`;
+  }
+
+  el.innerHTML = `
+    <div class="legend">
+      <span style="--c:var(--controller)">Controller</span><span style="--c:var(--service)">Service</span>
+      <span style="--c:var(--repository)">Repository</span><span style="--c:var(--scheduler)">Scheduler/Listener</span>
+      <span style="--c:var(--external)">Harici</span><span style="--c:var(--accent)">● giriş noktası</span>
+    </div>
+    <div class="graphwrap">
+      <div class="graph-hint">sürükle: kaydır · tekerlek: yakınlaştır · kutuya tıkla: bağlantıları vurgula</div>
+      <svg id="krokisvg" width="100%" height="${Math.min(Math.max(H,420),760)}" viewBox="0 0 ${W} ${H}">
+        ${arrowDefs()}<g id="krokivp">${svgTitles}${svgEdges}${svgNodes}</g>
+      </svg>
+    </div>`;
+
+  const svg = document.getElementById('krokisvg');
+  makePanZoom(svg, document.getElementById('krokivp'));
+  let selected = null;
+  svg.addEventListener('click', e => {
+    const g = e.target.closest('.nodeg');
+    const edges = svg.querySelectorAll('.edge'), nodes = svg.querySelectorAll('.nodeg');
+    if (!g || selected === g.dataset.id){
+      selected = null;
+      edges.forEach(p => p.classList.remove('hl','faded'));
+      nodes.forEach(n => n.classList.remove('faded'));
+      return;
+    }
+    selected = g.dataset.id;
+    const connected = new Set([selected]);
+    edges.forEach(p => {
+      const on = p.dataset.from === selected || p.dataset.to === selected;
+      p.classList.toggle('hl', on); p.classList.toggle('faded', !on);
+      if (on){ connected.add(p.dataset.from); connected.add(p.dataset.to); }
+    });
+    nodes.forEach(n => n.classList.toggle('faded', !connected.has(n.dataset.id)));
+  });
+})();
+
+/* ---------- Giriş Noktaları & Akışlar ---------- */
+(function entries(){
+  const el = document.getElementById('tab-entries');
+  if (!DATA.entryPoints.length){ el.innerHTML = '<div class="empty">Giriş noktası bulunamadı.</div>'; return; }
+
+  const KINDS = [['REST','REST Endpoint\'leri (Spring MVC)'],['JAXRS','JAX-RS / Jakarta REST Kaynakları'],
+                 ['SERVLET','Servlet\'ler'],['FILTER','Filter\'lar'],['LISTENER','Listener\'lar'],
+                 ['SCHEDULED','Zamanlanmış İşler'],['KAFKA','Kafka Listener\'ları'],['JMS','JMS / MDB'],
+                 ['MESSAGING','Reaktif Messaging'],['EVENT','Event Listener\'ları'],
+                 ['RUNNER','Uygulama Başlangıç Runner\'ları'],['MAIN','Main Metodu']];
+  const NOISY_METHODS = new Set(['println','print','printStackTrace','sleep','currentTimeMillis','format','valueOf','toString']);
+  const NOISY_OBJECTS = new Set(['System.out','System.err','log','logger','LOG','LOGGER']);
+
+  function isNoise(s){
+    return (s.method && NOISY_METHODS.has(s.method)) || (s.object && NOISY_OBJECTS.has(s.object));
+  }
+
+  function srcTag(ep){ return ep.source === 'web.xml' ? ' <span class="chip" style="font-size:10.5px">web.xml</span>' : ''; }
+  function epTitle(ep){
+    if (ep.kind === 'REST' || ep.kind === 'JAXRS')
+      return `<span class="mth ${esc(ep.httpMethod||'GET')}">${esc(ep.httpMethod||'?')}</span><span class="ep-path">${esc(ep.path||'')}</span>` +
+             (ep.produces ? `<span class="ep-src" style="margin-left:8px">⇢ ${esc(ep.produces)}</span>` : '');
+    if (ep.kind === 'SERVLET' || ep.kind === 'FILTER'){
+      const pats = (ep.urlPatterns && ep.urlPatterns.length) ? ep.urlPatterns.join(', ') : (ep.className + '.' + (ep.method||''));
+      return `<span class="mth ${esc(ep.kind)}">${esc(ep.kind)}${ep.httpMethod ? ' ' + esc(ep.httpMethod) : ''}</span><span class="ep-path">${esc(pats)}</span>` + srcTag(ep);
+    }
+    if (ep.kind === 'LISTENER')
+      return `<span class="mth LISTENER">LISTENER</span><span class="ep-path">${esc(ep.detail || ep.className)}</span>` + srcTag(ep);
+    if (ep.kind === 'SCHEDULED')
+      return `<span class="mth SCHEDULED">CRON</span><span class="ep-path">${esc(ep.cron || (ep.fixedRate ? 'her ' + ep.fixedRate + ' ms' : ''))}</span>`;
+    if (ep.kind === 'KAFKA')
+      return `<span class="mth KAFKA">KAFKA</span><span class="ep-path">${esc(ep.topics||'')}</span>`;
+    if (ep.kind === 'JMS')
+      return `<span class="mth JMS">JMS</span><span class="ep-path">${esc(ep.topics || ep.detail || '')}</span>`;
+    if (ep.kind === 'MESSAGING')
+      return `<span class="mth MESSAGING">MSG</span><span class="ep-path">${esc(ep.topics||'')}</span>`;
+    return `<span class="mth ${esc(ep.kind)}">${esc(ep.kind)}</span><span class="ep-path">${esc(ep.className)}.${esc(ep.method||'')}</span>`;
+  }
+
+  const ICON = { call:'→', if:'◆', loop:'⟳', return:'⏎', throw:'⚡', try:'⛨', switch:'⌥' };
+
+  function renderStep(s, depth){
+    const noise = isNoise(s);
+    let html = `<div class="st${noise ? ' dim' : ''}">
+      <span class="ln">${s.line||''}</span><span class="ico">${ICON[s.type]||'·'}</span>`;
+    if (s.context) html += `<span class="ctx">${esc(s.context)}</span>`;
+    if (s.type === 'call'){
+      const target = s.targetClass ? simple(s.targetClass) : (s.object||'');
+      if (s.method === 'new'){
+        html += `<span><span class="obj">new ${esc(target)}</span>()</span>`;
+      } else {
+        html += `<span><span class="obj">${esc(s.object==='this' ? '' : target || s.object)}</span>${s.object==='this'?'':'.'}<span class="met">${esc(s.method)}</span>(${esc((s.args||[]).join(', ')).slice(0,80)})</span>`;
+      }
+      if (s.assignTo) html += `<span class="asgn">→ ${esc(s.assignTo)}</span>`;
+      if (s.targetStereotype && s.targetStereotype !== 'external') html += `<span class="stx" style="border-color:${stColor(s.targetStereotype)}">${esc(STN[s.targetStereotype]||s.targetStereotype)}</span>`;
+      if (s.boundary) html += `<span class="bnd ${esc(s.boundary)}">${esc(s.boundary.toUpperCase())}</span>`;
+    } else if (s.type === 'if'){
+      html += `<span class="cond">if (${esc(s.condition||'')})</span>`;
+    } else if (s.type === 'loop'){
+      html += `<span class="cond">döngü: ${esc(s.condition||'')}</span>`;
+    } else if (s.type === 'return'){
+      html += `<span>return${s.condition ? ' <span class="cond">' + esc(s.condition) + '</span>' : ''}</span>`;
+    } else if (s.type === 'throw'){
+      html += `<span style="color:var(--external)">throw ${esc(s.condition||'')}</span>`;
+    } else if (s.type === 'try'){
+      html += `<span class="cond">try</span>`;
+    } else if (s.type === 'switch'){
+      html += `<span class="cond">switch (${esc(s.condition||'')})</span>`;
+    }
+    if (s.callee){
+      const open = depth < 1;
+      const cid = 'c' + Math.random().toString(36).slice(2,9);
+      if (s.callee.cycle){
+        html += `<span class="cyc">↺ döngüsel çağrı — yukarıda açıldı</span></div>`;
+      } else if (s.callee.depthLimit){
+        html += `<span class="cyc">… derinlik limiti</span></div>`;
+      } else {
+        html += `<span class="expander" data-target="${cid}">[${open?'−':'+'} ${esc(s.callee.className)}.${esc(s.callee.method)} içine in]</span></div>`;
+        html += `<div class="callee${open?' open':''}" id="${cid}">${renderNode(s.callee, depth+1)}</div>`;
+      }
+    } else {
+      html += '</div>';
+    }
+    return html;
+  }
+
+  function renderNode(node, depth){
+    let html = `<div class="tn"><div class="tn-head"><span class="cls" style="color:${stColor(node.stereotype)}">${esc(node.className)}</span>.${esc(node.signature||node.method)} <span style="opacity:.6">· ${esc(STN[node.stereotype]||node.stereotype||'')} · satır ${node.line||'?'}</span></div>`;
+    if (!node.steps || !node.steps.length) html += '<div class="st dim"><span class="ln"></span><span>— gövde boş ya da çözümlenemedi —</span></div>';
+    else node.steps.forEach(s => html += renderStep(s, depth));
+    return html + '</div>';
+  }
+
+  let html = '';
+  for (const [kind, title] of KINDS){
+    const eps = DATA.entryPoints.filter(e => e.kind === kind);
+    if (!eps.length) continue;
+    html += `<div class="ep-group"><h3>${title} (${eps.length})</h3>`;
+    for (const ep of eps){
+      html += `<div class="ep" id="${esc(ep.id)}">
+        <div class="ep-head">${epTitle(ep)}<span class="ep-src">${esc(ep.className)}${ep.method ? '.' + esc(ep.method) + '()' : ''}${ep.line ? ' · satır ' + ep.line : ''}</span></div>
+        <div class="ep-body"><div class="trace">${ep.trace ? renderNode(ep.trace, 0) : '<div class="empty">Akış çözümlenemedi.</div>'}</div></div>
+      </div>`;
+    }
+    html += '</div>';
+  }
+  el.innerHTML = html;
+
+  el.addEventListener('click', e => {
+    const exp = e.target.closest('.expander');
+    if (exp){
+      const t = document.getElementById(exp.dataset.target);
+      t.classList.toggle('open');
+      exp.textContent = exp.textContent.replace(t.classList.contains('open') ? '[+' : '[−', t.classList.contains('open') ? '[−' : '[+');
+      return;
+    }
+    const head = e.target.closest('.ep-head');
+    if (head) head.parentElement.classList.toggle('open');
+  });
+})();
+
+/* ---------- Çağrı Grafiği ---------- */
+(function callgraph(){
+  const el = document.getElementById('tab-graph');
+  const nodes = DATA.callGraph.nodes, edges = DATA.callGraph.edges;
+  const nodeById = {}; nodes.forEach(n => nodeById[n.id] = n);
+  const out = {}; edges.forEach(e => (out[e.from] = out[e.from] || []).push(e.to));
+
+  const eps = DATA.entryPoints;
+  el.innerHTML = `
+    <div class="toolbar">
+      <label>Giriş noktası:</label>
+      <select id="epsel"><option value="*">Tümü (erişilebilir grafik)</option>
+        ${eps.map(e => `<option value="${esc(e.classFqn)}#${esc(e.signature)}">${esc(e.kind)} ${esc(e.path || (e.urlPatterns&&e.urlPatterns.join(',')) || e.cron || e.topics || (e.className + (e.method ? '.' + e.method : '')))}</option>`).join('')}
+      </select>
+    </div>
+    <div class="legend">
+      <span style="--c:var(--controller)">Controller</span><span style="--c:var(--service)">Service</span>
+      <span style="--c:var(--repository)">Repository</span><span style="--c:var(--external)">Harici/Sınır</span>
+    </div>
+    <div class="graphwrap"><div class="graph-hint">sürükle · tekerlek · tıkla</div><div id="cgholder"></div></div>`;
+
+  function reachable(startIds){
+    const seen = new Set(startIds), queue = [...startIds];
+    while (queue.length){
+      const id = queue.shift();
+      (out[id]||[]).forEach(t => { if (!seen.has(t)){ seen.add(t); queue.push(t); } });
+    }
+    return seen;
+  }
+
+  function render(filter){
+    const startIds = filter === '*' ? eps.map(e => e.classFqn + '#' + e.signature).filter(id => nodeById[id]) : [filter];
+    const vis = reachable(startIds);
+    const vNodes = nodes.filter(n => vis.has(n.id));
+    const vEdges = edges.filter(e => vis.has(e.from) && vis.has(e.to));
+    if (!vNodes.length){ document.getElementById('cgholder').innerHTML = '<div class="empty">Gösterilecek düğüm yok.</div>'; return; }
+
+    // BFS derinliği -> kolon
+    const depth = new Map(); startIds.forEach(id => depth.set(id, 0));
+    let frontier = [...startIds];
+    while (frontier.length){
+      const next = [];
+      frontier.forEach(id => (out[id]||[]).forEach(t => {
+        if (vis.has(t) && !depth.has(t)){ depth.set(t, depth.get(id)+1); next.push(t); }
+      }));
+      frontier = next;
+    }
+    const COLW = 300, BOXH = 40, GAPY = 12, TOP = 30;
+    const byCol = {};
+    vNodes.forEach(n => { const d = depth.get(n.id) ?? 0; (byCol[d] = byCol[d] || []).push(n); });
+    const pos = new Map(); let maxRows = 0, maxCol = 0;
+    Object.entries(byCol).forEach(([d,list]) => {
+      maxCol = Math.max(maxCol, +d); maxRows = Math.max(maxRows, list.length);
+      list.sort((a,b) => (a.className+a.method).localeCompare(b.className+b.method));
+      list.forEach((n,j) => pos.set(n.id, { x: 20 + d*COLW, y: TOP + j*(BOXH+GAPY) }));
+    });
+    const W = 60 + (maxCol+1)*COLW, H = TOP + maxRows*(BOXH+GAPY) + 30;
+
+    let sEdges = '', sNodes = '';
+    vEdges.forEach(e => {
+      const p1 = pos.get(e.from), p2 = pos.get(e.to);
+      if (!p1 || !p2) return;
+      sEdges += `<path class="edge" data-from="${esc(e.from)}" data-to="${esc(e.to)}" d="${edgePath(p1.x+250, p1.y+BOXH/2, p2.x, p2.y+BOXH/2)}"/>`;
+    });
+    vNodes.forEach(n => {
+      const p = pos.get(n.id); if (!p) return;
+      const color = n.boundary ? `var(--${n.boundary})` : stColor(n.stereotype);
+      sNodes += `<g class="nodeg" data-id="${esc(n.id)}">
+        <rect class="node-box" x="${p.x}" y="${p.y}" width="250" height="${BOXH}" fill="var(--panel2)" stroke="${color}" ${n.entryPoint?'stroke-width="2.6"':''} rx="6"/>
+        <text class="nlabel" x="${p.x+10}" y="${p.y+17}">${esc((n.className+'.'+n.method).length>30 ? (n.className+'.'+n.method).slice(0,29)+'…' : n.className+'.'+n.method)}</text>
+        <text class="nsub" x="${p.x+10}" y="${p.y+32}">${esc(n.boundary ? n.boundary.toUpperCase() + ' sınırı' : (STN[n.stereotype]||n.stereotype||''))}</text>
+      </g>`;
+    });
+    document.getElementById('cgholder').innerHTML =
+      `<svg id="cgsvg" width="100%" height="${Math.min(Math.max(H,420),760)}" viewBox="0 0 ${W} ${H}">${arrowDefs()}<g id="cgvp">${sEdges}${sNodes}</g></svg>`;
+    const svg = document.getElementById('cgsvg');
+    makePanZoom(svg, document.getElementById('cgvp'));
+    let selected = null;
+    svg.addEventListener('click', e => {
+      const g = e.target.closest('.nodeg');
+      const ps = svg.querySelectorAll('.edge'), ns = svg.querySelectorAll('.nodeg');
+      if (!g || selected === g.dataset.id){
+        selected = null; ps.forEach(p => p.classList.remove('hl','faded')); ns.forEach(n => n.classList.remove('faded')); return;
+      }
+      selected = g.dataset.id;
+      const connected = new Set([selected]);
+      ps.forEach(p => {
+        const on = p.dataset.from === selected || p.dataset.to === selected;
+        p.classList.toggle('hl', on); p.classList.toggle('faded', !on);
+        if (on){ connected.add(p.dataset.from); connected.add(p.dataset.to); }
+      });
+      ns.forEach(n => n.classList.toggle('faded', !connected.has(n.dataset.id)));
+    });
+  }
+
+  document.getElementById('epsel').addEventListener('change', e => render(e.target.value));
+  render('*');
+})();
+</script>
+</body>
+</html>

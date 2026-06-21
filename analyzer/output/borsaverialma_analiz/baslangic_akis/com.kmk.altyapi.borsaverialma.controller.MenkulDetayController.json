@@ -1,0 +1,1754 @@
+{
+  "projeAdi" : "borsaverialma",
+  "girisSinifi" : "com.kmk.altyapi.borsaverialma.controller.MenkulDetayController",
+  "sinifAdi" : "MenkulDetayController",
+  "baslangicNoktalari" : [ {
+    "id" : "ep_3",
+    "tur" : "REST",
+    "httpMetodu" : "GET",
+    "yol" : "/menkuldetay",
+    "metod" : "getAll",
+    "imza" : "getAll()",
+    "satir" : 24,
+    "akis" : {
+      "sinifFqn" : "com.kmk.altyapi.borsaverialma.controller.MenkulDetayController",
+      "sinifAdi" : "MenkulDetayController",
+      "metod" : "getAll",
+      "imza" : "getAll()",
+      "stereotip" : "controller",
+      "satir" : 24,
+      "adimlar" : [ {
+        "adim" : 1,
+        "satir" : 26,
+        "tur" : "call",
+        "nesne" : "menkulDetayScraperService",
+        "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+        "hedefStereotip" : "service",
+        "metod" : "fetchDetails",
+        "argumanlar" : [ "\"https://uzmanpara.milliyet.com.tr/borsa/hisse-senetleri/..." ],
+        "projeIci" : true,
+        "altCagri" : {
+          "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+          "sinifAdi" : "MenkulDetayScraperService",
+          "metod" : "fetchDetails",
+          "imza" : "fetchDetails(String)",
+          "stereotip" : "service",
+          "satir" : 24,
+          "adimlar" : [ {
+            "adim" : 1,
+            "satir" : 25,
+            "tur" : "call",
+            "nesne" : "htmlFetcher",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.HtmlFetcher",
+            "hedefStereotip" : "service",
+            "metod" : "fetch",
+            "argumanlar" : [ "url" ],
+            "atananDegisken" : "html",
+            "projeIci" : true,
+            "altCagri" : {
+              "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.HtmlFetcher",
+              "sinifAdi" : "HtmlFetcher",
+              "metod" : "fetch",
+              "imza" : "fetch(String)",
+              "stereotip" : "service",
+              "satir" : 15,
+              "adimlar" : [ {
+                "adim" : 1,
+                "satir" : 16,
+                "tur" : "call",
+                "nesne" : "webClient",
+                "hedefSinif" : "org.springframework.web.reactive.function.client.WebClient",
+                "metod" : "get",
+                "projeIci" : false,
+                "sinir" : "http",
+                "disBagimlilik" : {
+                  "jar" : "spring-webflux-7.0.2.jar",
+                  "imza" : "get()",
+                  "donusTipi" : "WebClient$RequestHeadersUriSpec",
+                  "statik" : false
+                }
+              }, {
+                "adim" : 2,
+                "satir" : 16,
+                "tur" : "call",
+                "nesne" : "webClient.get()",
+                "metod" : "uri",
+                "argumanlar" : [ "url" ],
+                "projeIci" : false
+              }, {
+                "adim" : 3,
+                "satir" : 16,
+                "tur" : "call",
+                "nesne" : "webClient.get().uri(url)",
+                "metod" : "retrieve",
+                "projeIci" : false
+              }, {
+                "adim" : 4,
+                "satir" : 16,
+                "tur" : "call",
+                "nesne" : "webClient.get().uri(url).retrieve()",
+                "metod" : "bodyToMono",
+                "argumanlar" : [ "String.class" ],
+                "projeIci" : false
+              }, {
+                "adim" : 5,
+                "satir" : 16,
+                "tur" : "call",
+                "nesne" : "webClient.get().uri(url).retrieve().bodyToMono(String.class)",
+                "metod" : "block",
+                "projeIci" : false
+              }, {
+                "adim" : 6,
+                "satir" : 16,
+                "tur" : "return",
+                "kosul" : "webClient.get().uri(url).retrieve().bodyToMono(String.class).// senkron için block()",
+                "projeIci" : false
+              } ]
+            }
+          }, {
+            "adim" : 2,
+            "satir" : 26,
+            "tur" : "call",
+            "nesne" : "Jsoup",
+            "hedefSinif" : "org.jsoup.Jsoup",
+            "metod" : "parse",
+            "argumanlar" : [ "html", "url" ],
+            "atananDegisken" : "doc",
+            "projeIci" : false,
+            "disBagimlilik" : {
+              "jar" : "jsoup-1.17.2.jar",
+              "imza" : "parse(String, String)",
+              "donusTipi" : "Document",
+              "statik" : true
+            }
+          }, {
+            "adim" : 3,
+            "satir" : 28,
+            "tur" : "call",
+            "nesne" : "StockDetail",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.StockDetail",
+            "hedefStereotip" : "model",
+            "metod" : "new",
+            "atananDegisken" : "detail",
+            "projeIci" : true
+          }, {
+            "adim" : 4,
+            "satir" : 29,
+            "tur" : "call",
+            "nesne" : "detail",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.StockDetail",
+            "metod" : "setUrl",
+            "argumanlar" : [ "url" ],
+            "projeIci" : true
+          }, {
+            "adim" : 5,
+            "satir" : 32,
+            "tur" : "call",
+            "nesne" : "doc",
+            "hedefSinif" : "org.jsoup.nodes.Document",
+            "metod" : "selectFirst",
+            "argumanlar" : [ "\"h1\"" ],
+            "atananDegisken" : "h1",
+            "projeIci" : false
+          }, {
+            "adim" : 6,
+            "satir" : 33,
+            "tur" : "if",
+            "kosul" : "h1 != null",
+            "projeIci" : false
+          }, {
+            "adim" : 7,
+            "satir" : 34,
+            "tur" : "call",
+            "nesne" : "h1",
+            "hedefSinif" : "org.jsoup.nodes.Element",
+            "metod" : "ownText",
+            "baglam" : "if",
+            "projeIci" : false,
+            "disBagimlilik" : {
+              "jar" : "jsoup-1.17.2.jar",
+              "imza" : "ownText()",
+              "donusTipi" : "String",
+              "statik" : false
+            }
+          }, {
+            "adim" : 8,
+            "satir" : 34,
+            "tur" : "call",
+            "nesne" : "h1.ownText()",
+            "metod" : "trim",
+            "atananDegisken" : "titleText",
+            "baglam" : "if",
+            "projeIci" : false
+          }, {
+            "adim" : 9,
+            "satir" : 35,
+            "tur" : "call",
+            "nesne" : "h1",
+            "hedefSinif" : "org.jsoup.nodes.Element",
+            "metod" : "selectFirst",
+            "argumanlar" : [ "\"span\"" ],
+            "baglam" : "if",
+            "projeIci" : false,
+            "disBagimlilik" : {
+              "jar" : "jsoup-1.17.2.jar",
+              "imza" : "selectFirst(String)",
+              "donusTipi" : "Element",
+              "statik" : false
+            }
+          }, {
+            "adim" : 10,
+            "satir" : 35,
+            "tur" : "call",
+            "nesne" : "Optional",
+            "hedefSinif" : "java.util.Optional",
+            "metod" : "ofNullable",
+            "argumanlar" : [ "h1.selectFirst(\"span\")" ],
+            "baglam" : "if",
+            "projeIci" : false
+          }, {
+            "adim" : 11,
+            "satir" : 35,
+            "tur" : "call",
+            "nesne" : "Optional.ofNullable(h1.selectFirst(\"span\"))",
+            "metod" : "map",
+            "argumanlar" : [ "Element::text" ],
+            "baglam" : "if",
+            "projeIci" : false
+          }, {
+            "adim" : 12,
+            "satir" : 35,
+            "tur" : "call",
+            "nesne" : "Optional.ofNullable(h1.selectFirst(\"span\")).map(Element::...",
+            "metod" : "orElse",
+            "argumanlar" : [ "\"\"" ],
+            "baglam" : "if",
+            "projeIci" : false
+          }, {
+            "adim" : 13,
+            "satir" : 35,
+            "tur" : "call",
+            "nesne" : "Optional.ofNullable(h1.selectFirst(\"span\")).map(Element::...",
+            "metod" : "replace",
+            "argumanlar" : [ "\"(\"", "\"\"" ],
+            "baglam" : "if",
+            "projeIci" : false
+          }, {
+            "adim" : 14,
+            "satir" : 35,
+            "tur" : "call",
+            "nesne" : "Optional.ofNullable(h1.selectFirst(\"span\")).map(Element::...",
+            "metod" : "replace",
+            "argumanlar" : [ "\")\"", "\"\"" ],
+            "baglam" : "if",
+            "projeIci" : false
+          }, {
+            "adim" : 15,
+            "satir" : 35,
+            "tur" : "call",
+            "nesne" : "Optional.ofNullable(h1.selectFirst(\"span\")).map(Element::...",
+            "metod" : "trim",
+            "atananDegisken" : "symbol",
+            "baglam" : "if",
+            "projeIci" : false
+          }, {
+            "adim" : 16,
+            "satir" : 38,
+            "tur" : "call",
+            "nesne" : "symbol",
+            "hedefSinif" : "java.lang.String",
+            "metod" : "isEmpty",
+            "baglam" : "if",
+            "projeIci" : false
+          }, {
+            "adim" : 17,
+            "satir" : 38,
+            "tur" : "call",
+            "nesne" : "detail",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.StockDetail",
+            "metod" : "setTitle",
+            "argumanlar" : [ "titleText + (symbol.isEmpty() ? \"\" : \" (\" + symbol + \")\")" ],
+            "baglam" : "if",
+            "projeIci" : true
+          }, {
+            "adim" : 18,
+            "satir" : 39,
+            "tur" : "call",
+            "nesne" : "detail",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.StockDetail",
+            "metod" : "setSymbol",
+            "argumanlar" : [ "symbol" ],
+            "baglam" : "if",
+            "projeIci" : true
+          }, {
+            "adim" : 19,
+            "satir" : 42,
+            "tur" : "call",
+            "nesne" : "GeneralInfo",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.GeneralInfo",
+            "hedefStereotip" : "model",
+            "metod" : "new",
+            "atananDegisken" : "gen",
+            "projeIci" : true
+          }, {
+            "adim" : 20,
+            "satir" : 43,
+            "tur" : "call",
+            "nesne" : "TechnicalAnalysis",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.TechnicalAnalysis",
+            "hedefStereotip" : "model",
+            "metod" : "new",
+            "atananDegisken" : "ta",
+            "projeIci" : true
+          }, {
+            "adim" : 21,
+            "satir" : 44,
+            "tur" : "call",
+            "nesne" : "Fundamental",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+            "hedefStereotip" : "model",
+            "metod" : "new",
+            "atananDegisken" : "fu",
+            "projeIci" : true
+          }, {
+            "adim" : 22,
+            "satir" : 46,
+            "tur" : "loop",
+            "kosul" : "Element box : doc.select(\"div.box\")",
+            "projeIci" : false
+          }, {
+            "adim" : 23,
+            "satir" : 47,
+            "tur" : "call",
+            "nesne" : "box",
+            "hedefSinif" : "org.jsoup.nodes.Element",
+            "metod" : "selectFirst",
+            "argumanlar" : [ "\".boxTitle h2\"" ],
+            "atananDegisken" : "h2",
+            "baglam" : "loop",
+            "projeIci" : false,
+            "disBagimlilik" : {
+              "jar" : "jsoup-1.17.2.jar",
+              "imza" : "selectFirst(String)",
+              "donusTipi" : "Element",
+              "statik" : false
+            }
+          }, {
+            "adim" : 24,
+            "satir" : 48,
+            "tur" : "if",
+            "kosul" : "h2 == null",
+            "baglam" : "loop",
+            "projeIci" : false
+          }, {
+            "adim" : 25,
+            "satir" : 50,
+            "tur" : "call",
+            "nesne" : "h2",
+            "hedefSinif" : "org.jsoup.nodes.Element",
+            "metod" : "text",
+            "baglam" : "loop",
+            "projeIci" : false,
+            "disBagimlilik" : {
+              "jar" : "jsoup-1.17.2.jar",
+              "imza" : "text()",
+              "donusTipi" : "String",
+              "statik" : false
+            }
+          }, {
+            "adim" : 26,
+            "satir" : 50,
+            "tur" : "call",
+            "nesne" : "this",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+            "hedefStereotip" : "service",
+            "metod" : "norm",
+            "argumanlar" : [ "h2.text()" ],
+            "atananDegisken" : "title",
+            "baglam" : "loop",
+            "projeIci" : true,
+            "altCagri" : {
+              "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+              "sinifAdi" : "MenkulDetayScraperService",
+              "metod" : "norm",
+              "imza" : "norm(String)",
+              "stereotip" : "service",
+              "satir" : 176,
+              "adimlar" : [ {
+                "adim" : 1,
+                "satir" : 177,
+                "tur" : "if",
+                "kosul" : "s == null",
+                "projeIci" : false
+              }, {
+                "adim" : 2,
+                "satir" : 177,
+                "tur" : "return",
+                "kosul" : "\"\"",
+                "baglam" : "if",
+                "projeIci" : false
+              }, {
+                "adim" : 3,
+                "satir" : 178,
+                "tur" : "call",
+                "nesne" : "s",
+                "hedefSinif" : "java.lang.String",
+                "metod" : "replace",
+                "argumanlar" : [ "'\\u00A0'", "' '" ],
+                "projeIci" : false
+              }, {
+                "adim" : 4,
+                "satir" : 178,
+                "tur" : "call",
+                "nesne" : "s.replace('\\u00A0', ' ')",
+                "hedefSinif" : "java.lang.String",
+                "metod" : "trim",
+                "projeIci" : false
+              }, {
+                "adim" : 5,
+                "satir" : 178,
+                "tur" : "call",
+                "nesne" : "s.replace('\\u00A0', ' ').trim()",
+                "hedefSinif" : "java.lang.String",
+                "metod" : "toLowerCase",
+                "argumanlar" : [ "Locale.ROOT" ],
+                "atananDegisken" : "s",
+                "projeIci" : false
+              }, {
+                "adim" : 6,
+                "satir" : 179,
+                "tur" : "call",
+                "nesne" : "s",
+                "hedefSinif" : "java.lang.String",
+                "metod" : "replace",
+                "argumanlar" : [ "\"’\"", "\"'\"" ],
+                "projeIci" : false
+              }, {
+                "adim" : 7,
+                "satir" : 179,
+                "tur" : "call",
+                "nesne" : "s.replace(\"’\", \"'\")",
+                "hedefSinif" : "java.lang.String",
+                "metod" : "replace",
+                "argumanlar" : [ "\"‘\"", "\"'\"" ],
+                "projeIci" : false
+              }, {
+                "adim" : 8,
+                "satir" : 179,
+                "tur" : "call",
+                "nesne" : "s.replace(\"’\", \"'\").replace(\"‘\", \"'\")",
+                "hedefSinif" : "java.lang.String",
+                "metod" : "replace",
+                "argumanlar" : [ "\"`\"", "\"'\"" ],
+                "atananDegisken" : "s",
+                "projeIci" : false
+              }, {
+                "adim" : 9,
+                "satir" : 181,
+                "tur" : "return",
+                "kosul" : "s",
+                "projeIci" : false
+              } ]
+            }
+          }, {
+            "adim" : 27,
+            "satir" : 52,
+            "tur" : "call",
+            "nesne" : "box",
+            "hedefSinif" : "org.jsoup.nodes.Element",
+            "metod" : "select",
+            "argumanlar" : [ "\"> table\"" ],
+            "atananDegisken" : "tables",
+            "baglam" : "loop",
+            "projeIci" : false,
+            "disBagimlilik" : {
+              "jar" : "jsoup-1.17.2.jar",
+              "imza" : "select(String)",
+              "donusTipi" : "Elements",
+              "statik" : false
+            }
+          }, {
+            "adim" : 28,
+            "satir" : 53,
+            "tur" : "if",
+            "kosul" : "tables.isEmpty()",
+            "baglam" : "loop",
+            "projeIci" : false
+          }, {
+            "adim" : 29,
+            "satir" : 55,
+            "tur" : "if",
+            "kosul" : "title.contains(\"hisse genel bilg\")",
+            "baglam" : "loop",
+            "projeIci" : false
+          }, {
+            "adim" : 30,
+            "satir" : 56,
+            "tur" : "call",
+            "nesne" : "this",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+            "hedefStereotip" : "service",
+            "metod" : "fillGeneralFromTables",
+            "argumanlar" : [ "gen", "tables" ],
+            "baglam" : "if",
+            "projeIci" : true,
+            "altCagri" : {
+              "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+              "sinifAdi" : "MenkulDetayScraperService",
+              "metod" : "fillGeneralFromTables",
+              "imza" : "fillGeneralFromTables(GeneralInfo, Elements)",
+              "stereotip" : "service",
+              "satir" : 71,
+              "adimlar" : [ {
+                "adim" : 1,
+                "satir" : 73,
+                "tur" : "call",
+                "nesne" : "tables",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "0" ],
+                "atananDegisken" : "t1",
+                "projeIci" : false
+              }, {
+                "adim" : 2,
+                "satir" : 74,
+                "tur" : "loop",
+                "kosul" : "Element tr : t1.select(\"tbody > tr\")",
+                "projeIci" : false
+              }, {
+                "adim" : 3,
+                "satir" : 75,
+                "tur" : "call",
+                "nesne" : "tr",
+                "hedefSinif" : "org.jsoup.nodes.Element",
+                "metod" : "select",
+                "argumanlar" : [ "\"td\"" ],
+                "atananDegisken" : "tds",
+                "baglam" : "loop",
+                "projeIci" : false,
+                "disBagimlilik" : {
+                  "jar" : "jsoup-1.17.2.jar",
+                  "imza" : "select(String)",
+                  "donusTipi" : "Elements",
+                  "statik" : false
+                }
+              }, {
+                "adim" : 4,
+                "satir" : 76,
+                "tur" : "if",
+                "kosul" : "tds.size() < 2",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 5,
+                "satir" : 77,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "0" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 6,
+                "satir" : 77,
+                "tur" : "call",
+                "nesne" : "tds.get(0)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 7,
+                "satir" : 77,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "norm",
+                "argumanlar" : [ "tds.get(0).text()" ],
+                "atananDegisken" : "key",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "norm",
+                  "imza" : "norm(String)",
+                  "stereotip" : "service",
+                  "satir" : 176,
+                  "buDosyadaYukaridaAcildi" : true
+                }
+              }, {
+                "adim" : 8,
+                "satir" : 78,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "1" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 9,
+                "satir" : 78,
+                "tur" : "call",
+                "nesne" : "tds.get(1)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 10,
+                "satir" : 78,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "clean",
+                "argumanlar" : [ "tds.get(1).text()" ],
+                "atananDegisken" : "val",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "clean",
+                  "imza" : "clean(String)",
+                  "stereotip" : "service",
+                  "satir" : 184,
+                  "adimlar" : [ {
+                    "adim" : 1,
+                    "satir" : 185,
+                    "tur" : "call",
+                    "nesne" : "s",
+                    "hedefSinif" : "java.lang.String",
+                    "metod" : "replace",
+                    "argumanlar" : [ "'\\u00A0'", "' '" ],
+                    "projeIci" : false
+                  }, {
+                    "adim" : 2,
+                    "satir" : 185,
+                    "tur" : "call",
+                    "nesne" : "s.replace('\\u00A0', ' ')",
+                    "hedefSinif" : "java.lang.String",
+                    "metod" : "trim",
+                    "projeIci" : false
+                  }, {
+                    "adim" : 3,
+                    "satir" : 185,
+                    "tur" : "return",
+                    "kosul" : "s == null ? \"\" : s.replace('\\u00A0', ' ').trim()",
+                    "projeIci" : false
+                  } ]
+                }
+              }, {
+                "adim" : 11,
+                "satir" : 80,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"alış\")",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 12,
+                "satir" : 80,
+                "tur" : "call",
+                "nesne" : "gen",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.GeneralInfo",
+                "metod" : "setAlis",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 13,
+                "satir" : 81,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"satış\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 14,
+                "satir" : 81,
+                "tur" : "call",
+                "nesne" : "gen",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.GeneralInfo",
+                "metod" : "setSatis",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 15,
+                "satir" : 82,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"net değişim\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 16,
+                "satir" : 82,
+                "tur" : "call",
+                "nesne" : "gen",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.GeneralInfo",
+                "metod" : "setNetDegisim",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 17,
+                "satir" : 83,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"taban\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 18,
+                "satir" : 83,
+                "tur" : "call",
+                "nesne" : "gen",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.GeneralInfo",
+                "metod" : "setTaban",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 19,
+                "satir" : 84,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"tavan\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 20,
+                "satir" : 84,
+                "tur" : "call",
+                "nesne" : "gen",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.GeneralInfo",
+                "metod" : "setTavan",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 21,
+                "satir" : 88,
+                "tur" : "if",
+                "kosul" : "tables.size() > 1",
+                "projeIci" : false
+              }, {
+                "adim" : 22,
+                "satir" : 89,
+                "tur" : "call",
+                "nesne" : "tables",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "1" ],
+                "atananDegisken" : "t2",
+                "baglam" : "if",
+                "projeIci" : false
+              }, {
+                "adim" : 23,
+                "satir" : 90,
+                "tur" : "call",
+                "nesne" : "Seans",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Seans",
+                "hedefStereotip" : "model",
+                "metod" : "new",
+                "atananDegisken" : "seans",
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 24,
+                "satir" : 91,
+                "tur" : "loop",
+                "kosul" : "Element tr : t2.select(\"tbody > tr\")",
+                "baglam" : "if",
+                "projeIci" : false
+              }, {
+                "adim" : 25,
+                "satir" : 92,
+                "tur" : "call",
+                "nesne" : "tr",
+                "hedefSinif" : "org.jsoup.nodes.Element",
+                "metod" : "select",
+                "argumanlar" : [ "\"td\"" ],
+                "atananDegisken" : "tds",
+                "baglam" : "loop",
+                "projeIci" : false,
+                "disBagimlilik" : {
+                  "jar" : "jsoup-1.17.2.jar",
+                  "imza" : "select(String)",
+                  "donusTipi" : "Elements",
+                  "statik" : false
+                }
+              }, {
+                "adim" : 26,
+                "satir" : 93,
+                "tur" : "if",
+                "kosul" : "tds.size() < 3",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 27,
+                "satir" : 94,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "0" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 28,
+                "satir" : 94,
+                "tur" : "call",
+                "nesne" : "tds.get(0)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 29,
+                "satir" : 94,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "norm",
+                "argumanlar" : [ "tds.get(0).text()" ],
+                "atananDegisken" : "row",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "norm",
+                  "imza" : "norm(String)",
+                  "stereotip" : "service",
+                  "satir" : 176,
+                  "buDosyadaYukaridaAcildi" : true
+                }
+              }, {
+                "adim" : 30,
+                "satir" : 95,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "1" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 31,
+                "satir" : 95,
+                "tur" : "call",
+                "nesne" : "tds.get(1)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 32,
+                "satir" : 95,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "clean",
+                "argumanlar" : [ "tds.get(1).text()" ],
+                "atananDegisken" : "v1",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "clean",
+                  "imza" : "clean(String)",
+                  "stereotip" : "service",
+                  "satir" : 184,
+                  "buDosyadaYukaridaAcildi" : true
+                }
+              }, {
+                "adim" : 33,
+                "satir" : 96,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "2" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 34,
+                "satir" : 96,
+                "tur" : "call",
+                "nesne" : "tds.get(2)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 35,
+                "satir" : 96,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "clean",
+                "argumanlar" : [ "tds.get(2).text()" ],
+                "atananDegisken" : "v2",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "clean",
+                  "imza" : "clean(String)",
+                  "stereotip" : "service",
+                  "satir" : 184,
+                  "buDosyadaYukaridaAcildi" : true
+                }
+              }, {
+                "adim" : 36,
+                "satir" : 98,
+                "tur" : "if",
+                "kosul" : "row.startsWith(\"son\")",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 37,
+                "satir" : 98,
+                "tur" : "call",
+                "nesne" : "seans",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Seans",
+                "metod" : "setSon1",
+                "argumanlar" : [ "v1" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 38,
+                "satir" : 98,
+                "tur" : "call",
+                "nesne" : "seans",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Seans",
+                "metod" : "setSon2",
+                "argumanlar" : [ "v2" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 39,
+                "satir" : 99,
+                "tur" : "if",
+                "kosul" : "row.startsWith(\"yüksek\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 40,
+                "satir" : 99,
+                "tur" : "call",
+                "nesne" : "seans",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Seans",
+                "metod" : "setYuksek1",
+                "argumanlar" : [ "v1" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 41,
+                "satir" : 99,
+                "tur" : "call",
+                "nesne" : "seans",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Seans",
+                "metod" : "setYuksek2",
+                "argumanlar" : [ "v2" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 42,
+                "satir" : 100,
+                "tur" : "if",
+                "kosul" : "row.startsWith(\"düşük\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 43,
+                "satir" : 100,
+                "tur" : "call",
+                "nesne" : "seans",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Seans",
+                "metod" : "setDusuk1",
+                "argumanlar" : [ "v1" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 44,
+                "satir" : 100,
+                "tur" : "call",
+                "nesne" : "seans",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Seans",
+                "metod" : "setDusuk2",
+                "argumanlar" : [ "v2" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 45,
+                "satir" : 101,
+                "tur" : "if",
+                "kosul" : "row.startsWith(\"ağırlıklı ortalama\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 46,
+                "satir" : 102,
+                "tur" : "call",
+                "nesne" : "seans",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Seans",
+                "metod" : "setAgirlikliOrtalama1",
+                "argumanlar" : [ "v1" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 47,
+                "satir" : 102,
+                "tur" : "call",
+                "nesne" : "seans",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Seans",
+                "metod" : "setAgirlikliOrtalama2",
+                "argumanlar" : [ "v2" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 48,
+                "satir" : 105,
+                "tur" : "call",
+                "nesne" : "gen",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.GeneralInfo",
+                "metod" : "setSeans",
+                "argumanlar" : [ "seans" ],
+                "baglam" : "if",
+                "projeIci" : true
+              } ]
+            }
+          }, {
+            "adim" : 31,
+            "satir" : 57,
+            "tur" : "call",
+            "nesne" : "detail",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.StockDetail",
+            "metod" : "setGeneral",
+            "argumanlar" : [ "gen" ],
+            "baglam" : "if",
+            "projeIci" : true
+          }, {
+            "adim" : 32,
+            "satir" : 58,
+            "tur" : "if",
+            "kosul" : "title.contains(\"teknik analiz\")",
+            "baglam" : "else",
+            "projeIci" : false
+          }, {
+            "adim" : 33,
+            "satir" : 59,
+            "tur" : "call",
+            "nesne" : "this",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+            "hedefStereotip" : "service",
+            "metod" : "fillTechnicalFromTables",
+            "argumanlar" : [ "ta", "tables" ],
+            "baglam" : "if",
+            "projeIci" : true,
+            "altCagri" : {
+              "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+              "sinifAdi" : "MenkulDetayScraperService",
+              "metod" : "fillTechnicalFromTables",
+              "imza" : "fillTechnicalFromTables(TechnicalAnalysis, Elements)",
+              "stereotip" : "service",
+              "satir" : 110,
+              "adimlar" : [ {
+                "adim" : 1,
+                "satir" : 112,
+                "tur" : "loop",
+                "kosul" : "Element table : tables",
+                "projeIci" : false
+              }, {
+                "adim" : 2,
+                "satir" : 113,
+                "tur" : "loop",
+                "kosul" : "Element tr : table.select(\"tbody > tr\")",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 3,
+                "satir" : 114,
+                "tur" : "call",
+                "nesne" : "tr",
+                "hedefSinif" : "org.jsoup.nodes.Element",
+                "metod" : "select",
+                "argumanlar" : [ "\"td\"" ],
+                "atananDegisken" : "tds",
+                "baglam" : "loop",
+                "projeIci" : false,
+                "disBagimlilik" : {
+                  "jar" : "jsoup-1.17.2.jar",
+                  "imza" : "select(String)",
+                  "donusTipi" : "Elements",
+                  "statik" : false
+                }
+              }, {
+                "adim" : 4,
+                "satir" : 115,
+                "tur" : "if",
+                "kosul" : "tds.size() < 2",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 5,
+                "satir" : 116,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "0" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 6,
+                "satir" : 116,
+                "tur" : "call",
+                "nesne" : "tds.get(0)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 7,
+                "satir" : 116,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "norm",
+                "argumanlar" : [ "tds.get(0).text()" ],
+                "atananDegisken" : "key",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "norm",
+                  "imza" : "norm(String)",
+                  "stereotip" : "service",
+                  "satir" : 176,
+                  "buDosyadaYukaridaAcildi" : true
+                }
+              }, {
+                "adim" : 8,
+                "satir" : 117,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "1" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 9,
+                "satir" : 117,
+                "tur" : "call",
+                "nesne" : "tds.get(1)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 10,
+                "satir" : 117,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "clean",
+                "argumanlar" : [ "tds.get(1).text()" ],
+                "atananDegisken" : "val",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "clean",
+                  "imza" : "clean(String)",
+                  "stereotip" : "service",
+                  "satir" : 184,
+                  "buDosyadaYukaridaAcildi" : true
+                }
+              }, {
+                "adim" : 11,
+                "satir" : 120,
+                "tur" : "if",
+                "kosul" : "(key.startsWith(\"cci\") || key.contains(\"cci\")) && key.contains(\"14\")",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 12,
+                "satir" : 121,
+                "tur" : "call",
+                "nesne" : "ta",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.TechnicalAnalysis",
+                "metod" : "setCci14",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 13,
+                "satir" : 124,
+                "tur" : "if",
+                "kosul" : "(key.startsWith(\"rsi\") || key.contains(\"rsi\")) && key.contains(\"14\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 14,
+                "satir" : 125,
+                "tur" : "call",
+                "nesne" : "ta",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.TechnicalAnalysis",
+                "metod" : "setRsi14",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 15,
+                "satir" : 128,
+                "tur" : "if",
+                "kosul" : "key.contains(\"hareketli\") && (key.contains(\"(10)\") || key.contains(\"10\"))",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 16,
+                "satir" : 129,
+                "tur" : "call",
+                "nesne" : "ta",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.TechnicalAnalysis",
+                "metod" : "setMovingAverage10",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 17,
+                "satir" : 132,
+                "tur" : "if",
+                "kosul" : "(key.contains(\"stokastik\") || key.contains(\"stochastic\")) && (key.contains(\"(5)\") || key.endsWith(\" 5\") || key.contai...",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 18,
+                "satir" : 133,
+                "tur" : "call",
+                "nesne" : "ta",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.TechnicalAnalysis",
+                "metod" : "setStochasticSlow5",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              } ]
+            }
+          }, {
+            "adim" : 34,
+            "satir" : 60,
+            "tur" : "call",
+            "nesne" : "detail",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.StockDetail",
+            "metod" : "setTechnical",
+            "argumanlar" : [ "ta" ],
+            "baglam" : "if",
+            "projeIci" : true
+          }, {
+            "adim" : 35,
+            "satir" : 61,
+            "tur" : "if",
+            "kosul" : "title.contains(\"temel veriler\")",
+            "baglam" : "else",
+            "projeIci" : false
+          }, {
+            "adim" : 36,
+            "satir" : 62,
+            "tur" : "call",
+            "nesne" : "this",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+            "hedefStereotip" : "service",
+            "metod" : "fillFundamentalFromTables",
+            "argumanlar" : [ "fu", "tables" ],
+            "baglam" : "if",
+            "projeIci" : true,
+            "altCagri" : {
+              "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+              "sinifAdi" : "MenkulDetayScraperService",
+              "metod" : "fillFundamentalFromTables",
+              "imza" : "fillFundamentalFromTables(Fundamental, Elements)",
+              "stereotip" : "service",
+              "satir" : 139,
+              "adimlar" : [ {
+                "adim" : 1,
+                "satir" : 141,
+                "tur" : "call",
+                "nesne" : "tables",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "0" ],
+                "atananDegisken" : "t1",
+                "projeIci" : false
+              }, {
+                "adim" : 2,
+                "satir" : 142,
+                "tur" : "loop",
+                "kosul" : "Element tr : t1.select(\"tbody > tr\")",
+                "projeIci" : false
+              }, {
+                "adim" : 3,
+                "satir" : 143,
+                "tur" : "call",
+                "nesne" : "tr",
+                "hedefSinif" : "org.jsoup.nodes.Element",
+                "metod" : "select",
+                "argumanlar" : [ "\"td\"" ],
+                "atananDegisken" : "tds",
+                "baglam" : "loop",
+                "projeIci" : false,
+                "disBagimlilik" : {
+                  "jar" : "jsoup-1.17.2.jar",
+                  "imza" : "select(String)",
+                  "donusTipi" : "Elements",
+                  "statik" : false
+                }
+              }, {
+                "adim" : 4,
+                "satir" : 144,
+                "tur" : "if",
+                "kosul" : "tds.size() < 2",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 5,
+                "satir" : 145,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "0" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 6,
+                "satir" : 145,
+                "tur" : "call",
+                "nesne" : "tds.get(0)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 7,
+                "satir" : 145,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "norm",
+                "argumanlar" : [ "tds.get(0).text()" ],
+                "atananDegisken" : "key",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "norm",
+                  "imza" : "norm(String)",
+                  "stereotip" : "service",
+                  "satir" : 176,
+                  "buDosyadaYukaridaAcildi" : true
+                }
+              }, {
+                "adim" : 8,
+                "satir" : 146,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "1" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 9,
+                "satir" : 146,
+                "tur" : "call",
+                "nesne" : "tds.get(1)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 10,
+                "satir" : 146,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "clean",
+                "argumanlar" : [ "tds.get(1).text()" ],
+                "atananDegisken" : "val",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "clean",
+                  "imza" : "clean(String)",
+                  "stereotip" : "service",
+                  "satir" : 184,
+                  "buDosyadaYukaridaAcildi" : true
+                }
+              }, {
+                "adim" : 11,
+                "satir" : 148,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"beta\")",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 12,
+                "satir" : 148,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setBeta",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 13,
+                "satir" : 149,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"halka açıklık oranı\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 14,
+                "satir" : 149,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setHalkaAciklikOrani",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 15,
+                "satir" : 150,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"bist-100'deki ağırl\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 16,
+                "satir" : 150,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setBist100Agirligi",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 17,
+                "satir" : 151,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"f/k oranı\") || key.equals(\"f/k\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 18,
+                "satir" : 151,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setFkOrani",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 19,
+                "satir" : 152,
+                "tur" : "if",
+                "kosul" : "key.contains(\"piyasa değ. / defter değ\") || key.contains(\"pd/dd\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 20,
+                "satir" : 152,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setPdDd",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 21,
+                "satir" : 153,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"dibe uzaklık\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 22,
+                "satir" : 153,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setDibeUzaklik",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 23,
+                "satir" : 157,
+                "tur" : "if",
+                "kosul" : "tables.size() > 1",
+                "projeIci" : false
+              }, {
+                "adim" : 24,
+                "satir" : 158,
+                "tur" : "call",
+                "nesne" : "tables",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "1" ],
+                "atananDegisken" : "t2",
+                "baglam" : "if",
+                "projeIci" : false
+              }, {
+                "adim" : 25,
+                "satir" : 159,
+                "tur" : "loop",
+                "kosul" : "Element tr : t2.select(\"tbody > tr\")",
+                "baglam" : "if",
+                "projeIci" : false
+              }, {
+                "adim" : 26,
+                "satir" : 160,
+                "tur" : "call",
+                "nesne" : "tr",
+                "hedefSinif" : "org.jsoup.nodes.Element",
+                "metod" : "select",
+                "argumanlar" : [ "\"td\"" ],
+                "atananDegisken" : "tds",
+                "baglam" : "loop",
+                "projeIci" : false,
+                "disBagimlilik" : {
+                  "jar" : "jsoup-1.17.2.jar",
+                  "imza" : "select(String)",
+                  "donusTipi" : "Elements",
+                  "statik" : false
+                }
+              }, {
+                "adim" : 27,
+                "satir" : 161,
+                "tur" : "if",
+                "kosul" : "tds.size() < 2",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 28,
+                "satir" : 162,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "0" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 29,
+                "satir" : 162,
+                "tur" : "call",
+                "nesne" : "tds.get(0)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 30,
+                "satir" : 162,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "norm",
+                "argumanlar" : [ "tds.get(0).text()" ],
+                "atananDegisken" : "key",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "norm",
+                  "imza" : "norm(String)",
+                  "stereotip" : "service",
+                  "satir" : 176,
+                  "buDosyadaYukaridaAcildi" : true
+                }
+              }, {
+                "adim" : 31,
+                "satir" : 163,
+                "tur" : "call",
+                "nesne" : "tds",
+                "hedefSinif" : "org.jsoup.select.Elements",
+                "metod" : "get",
+                "argumanlar" : [ "1" ],
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 32,
+                "satir" : 163,
+                "tur" : "call",
+                "nesne" : "tds.get(1)",
+                "metod" : "text",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 33,
+                "satir" : 163,
+                "tur" : "call",
+                "nesne" : "this",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                "hedefStereotip" : "service",
+                "metod" : "clean",
+                "argumanlar" : [ "tds.get(1).text()" ],
+                "atananDegisken" : "val",
+                "baglam" : "loop",
+                "projeIci" : true,
+                "altCagri" : {
+                  "sinifFqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+                  "sinifAdi" : "MenkulDetayScraperService",
+                  "metod" : "clean",
+                  "imza" : "clean(String)",
+                  "stereotip" : "service",
+                  "satir" : 184,
+                  "buDosyadaYukaridaAcildi" : true
+                }
+              }, {
+                "adim" : 34,
+                "satir" : 165,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"piyasa değeri (usd)\")",
+                "baglam" : "loop",
+                "projeIci" : false
+              }, {
+                "adim" : 35,
+                "satir" : 165,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setPiyasaDegeriUsd",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 36,
+                "satir" : 166,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"piyasa değeri (tl)\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 37,
+                "satir" : 166,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setPiyasaDegeriTl",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 38,
+                "satir" : 167,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"özsermaye\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 39,
+                "satir" : 167,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setOzsermaye",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 40,
+                "satir" : 168,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"sermaye\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 41,
+                "satir" : 168,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setSermaye",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              }, {
+                "adim" : 42,
+                "satir" : 169,
+                "tur" : "if",
+                "kosul" : "key.startsWith(\"net kar\")",
+                "baglam" : "else",
+                "projeIci" : false
+              }, {
+                "adim" : 43,
+                "satir" : 169,
+                "tur" : "call",
+                "nesne" : "fu",
+                "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+                "metod" : "setNetKar",
+                "argumanlar" : [ "val" ],
+                "baglam" : "if",
+                "projeIci" : true
+              } ]
+            }
+          }, {
+            "adim" : 37,
+            "satir" : 63,
+            "tur" : "call",
+            "nesne" : "detail",
+            "hedefSinif" : "com.kmk.altyapi.borsaverialma.model.StockDetail",
+            "metod" : "setFundamental",
+            "argumanlar" : [ "fu" ],
+            "baglam" : "if",
+            "projeIci" : true
+          }, {
+            "adim" : 38,
+            "satir" : 66,
+            "tur" : "return",
+            "kosul" : "detail",
+            "projeIci" : false
+          } ]
+        }
+      }, {
+        "adim" : 2,
+        "satir" : 26,
+        "tur" : "call",
+        "nesne" : "ResponseEntity",
+        "hedefSinif" : "org.springframework.http.ResponseEntity",
+        "metod" : "ok",
+        "argumanlar" : [ "menkulDetayScraperService.fetchDetails(\"https://uzmanpara..." ],
+        "projeIci" : false,
+        "disBagimlilik" : {
+          "jar" : "spring-web-7.0.2.jar",
+          "imza" : "ok(T)",
+          "donusTipi" : "ResponseEntity",
+          "statik" : true
+        }
+      }, {
+        "adim" : 3,
+        "satir" : 26,
+        "tur" : "return",
+        "kosul" : "ResponseEntity.ok(menkulDetayScraperService.fetchDetails(\"https://uzmanpara.milliyet.com.tr/borsa/hisse-senetleri/a1-...",
+        "projeIci" : false
+      } ]
+    }
+  } ]
+}

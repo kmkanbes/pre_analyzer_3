@@ -1,0 +1,746 @@
+{
+  "projeAdi" : "borsaverialma",
+  "aciklama" : "Projedeki sınıfların özet katalogu (imza düzeyi, akış YOK). Bir metodun adım adım akışı için baslangic_akis/<GirisSinifi>.json dosyalarına bakın.",
+  "siniflar" : [ {
+    "fqn" : "com.kmk.altyapi.borsaverialma.BorsaverialmaApplication",
+    "ad" : "BorsaverialmaApplication",
+    "paket" : "com.kmk.altyapi.borsaverialma",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\BorsaverialmaApplication.java",
+    "tur" : "class",
+    "stereotip" : "main",
+    "girisNoktasiMi" : true,
+    "anotasyonlar" : [ "@SpringBootApplication(scanBasePackages = \"com.kmk.altyapi\")" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ ],
+    "metodlar" : [ {
+      "ad" : "main",
+      "imza" : "main(String[])",
+      "donusTipi" : "void",
+      "parametreler" : [ "String[] args" ],
+      "anotasyonlar" : [ ],
+      "satir" : 9,
+      "girisNoktasiMi" : true
+    } ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.business.HtmlFetcher",
+    "ad" : "HtmlFetcher",
+    "paket" : "com.kmk.altyapi.borsaverialma.business",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\business\\HtmlFetcher.java",
+    "tur" : "class",
+    "stereotip" : "service",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Service" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "webClient",
+      "tip" : "WebClient",
+      "enjekte" : true
+    } ],
+    "metodlar" : [ {
+      "ad" : "fetch",
+      "imza" : "fetch(String)",
+      "donusTipi" : "String",
+      "parametreler" : [ "String url" ],
+      "anotasyonlar" : [ ],
+      "satir" : 15
+    } ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.business.MenkulDetayScraperService",
+    "ad" : "MenkulDetayScraperService",
+    "paket" : "com.kmk.altyapi.borsaverialma.business",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\business\\MenkulDetayScraperService.java",
+    "tur" : "class",
+    "stereotip" : "service",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Service" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "htmlFetcher",
+      "tip" : "HtmlFetcher",
+      "enjekte" : true
+    } ],
+    "metodlar" : [ {
+      "ad" : "fetchDetails",
+      "imza" : "fetchDetails(String)",
+      "donusTipi" : "StockDetail",
+      "parametreler" : [ "String url" ],
+      "anotasyonlar" : [ ],
+      "satir" : 24
+    }, {
+      "ad" : "fillGeneralFromTables",
+      "imza" : "fillGeneralFromTables(GeneralInfo, Elements)",
+      "donusTipi" : "void",
+      "parametreler" : [ "GeneralInfo gen", "Elements tables" ],
+      "anotasyonlar" : [ ],
+      "satir" : 71
+    }, {
+      "ad" : "fillTechnicalFromTables",
+      "imza" : "fillTechnicalFromTables(TechnicalAnalysis, Elements)",
+      "donusTipi" : "void",
+      "parametreler" : [ "TechnicalAnalysis ta", "Elements tables" ],
+      "anotasyonlar" : [ ],
+      "satir" : 110
+    }, {
+      "ad" : "fillFundamentalFromTables",
+      "imza" : "fillFundamentalFromTables(Fundamental, Elements)",
+      "donusTipi" : "void",
+      "parametreler" : [ "Fundamental fu", "Elements tables" ],
+      "anotasyonlar" : [ ],
+      "satir" : 139
+    }, {
+      "ad" : "norm",
+      "imza" : "norm(String)",
+      "donusTipi" : "String",
+      "parametreler" : [ "String s" ],
+      "anotasyonlar" : [ ],
+      "satir" : 176
+    }, {
+      "ad" : "clean",
+      "imza" : "clean(String)",
+      "donusTipi" : "String",
+      "parametreler" : [ "String s" ],
+      "anotasyonlar" : [ ],
+      "satir" : 184
+    } ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.business.MenkulScraperService",
+    "ad" : "MenkulScraperService",
+    "paket" : "com.kmk.altyapi.borsaverialma.business",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\business\\MenkulScraperService.java",
+    "tur" : "class",
+    "stereotip" : "service",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Service", "@RequiredArgsConstructor" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "htmlFetcher",
+      "tip" : "HtmlFetcher",
+      "enjekte" : true
+    } ],
+    "metodlar" : [ {
+      "ad" : "fetch",
+      "imza" : "fetch()",
+      "donusTipi" : "List<RowData>",
+      "parametreler" : [ ],
+      "anotasyonlar" : [ ],
+      "satir" : 22
+    } ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.business.UzmanParaService",
+    "ad" : "UzmanParaService",
+    "paket" : "com.kmk.altyapi.borsaverialma.business",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\business\\UzmanParaService.java",
+    "tur" : "class",
+    "stereotip" : "service",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Service", "@RequiredArgsConstructor" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "menkulScraperService",
+      "tip" : "MenkulScraperService",
+      "enjekte" : true
+    }, {
+      "ad" : "menkulDetayScraperService",
+      "tip" : "MenkulDetayScraperService",
+      "enjekte" : true
+    } ],
+    "metodlar" : [ {
+      "ad" : "uzmanParaHisseListesi",
+      "imza" : "uzmanParaHisseListesi()",
+      "donusTipi" : "UzmanParaHisseListObj",
+      "parametreler" : [ ],
+      "anotasyonlar" : [ ],
+      "satir" : 17
+    }, {
+      "ad" : "uzmanParaHisseDetay",
+      "imza" : "uzmanParaHisseDetay(String)",
+      "donusTipi" : "UzmanParaHisseDetay",
+      "parametreler" : [ "String symbolUrl" ],
+      "anotasyonlar" : [ ],
+      "satir" : 60
+    }, {
+      "ad" : "convertRowDataToUzmanParaHisse",
+      "imza" : "convertRowDataToUzmanParaHisse(RowData)",
+      "donusTipi" : "UzmanParaHisse",
+      "parametreler" : [ "RowData raw" ],
+      "anotasyonlar" : [ ],
+      "satir" : 65
+    }, {
+      "ad" : "convertStockDetailTOUzmanParaHisseDatay",
+      "imza" : "convertStockDetailTOUzmanParaHisseDatay(StockDetail)",
+      "donusTipi" : "UzmanParaHisseDetay",
+      "parametreler" : [ "StockDetail detail" ],
+      "anotasyonlar" : [ ],
+      "satir" : 76
+    } ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.config.WebClientConfig",
+    "ad" : "WebClientConfig",
+    "paket" : "com.kmk.altyapi.borsaverialma.config",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\config\\WebClientConfig.java",
+    "tur" : "class",
+    "stereotip" : "config",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Configuration" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ ],
+    "metodlar" : [ {
+      "ad" : "webClient",
+      "imza" : "webClient()",
+      "donusTipi" : "WebClient",
+      "parametreler" : [ ],
+      "anotasyonlar" : [ "@Bean" ],
+      "satir" : 11
+    } ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.controller.MenkulController",
+    "ad" : "MenkulController",
+    "paket" : "com.kmk.altyapi.borsaverialma.controller",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\controller\\MenkulController.java",
+    "tur" : "class",
+    "stereotip" : "controller",
+    "girisNoktasiMi" : true,
+    "anotasyonlar" : [ "@RestController", "@RequiredArgsConstructor", "@RequestMapping(\"/menkul\")" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "scraper",
+      "tip" : "MenkulScraperService",
+      "enjekte" : true
+    } ],
+    "metodlar" : [ {
+      "ad" : "getAll",
+      "imza" : "getAll()",
+      "donusTipi" : "ResponseEntity<List<RowData>>",
+      "parametreler" : [ ],
+      "anotasyonlar" : [ "@GetMapping" ],
+      "satir" : 18,
+      "girisNoktasiMi" : true
+    } ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.controller.MenkulDetayController",
+    "ad" : "MenkulDetayController",
+    "paket" : "com.kmk.altyapi.borsaverialma.controller",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\controller\\MenkulDetayController.java",
+    "tur" : "class",
+    "stereotip" : "controller",
+    "girisNoktasiMi" : true,
+    "anotasyonlar" : [ "@RestController", "@RequestMapping(\"/menkuldetay\")" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "menkulDetayScraperService",
+      "tip" : "MenkulDetayScraperService",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ {
+      "ad" : "getAll",
+      "imza" : "getAll()",
+      "donusTipi" : "ResponseEntity<StockDetail>",
+      "parametreler" : [ ],
+      "anotasyonlar" : [ "@GetMapping" ],
+      "satir" : 24,
+      "girisNoktasiMi" : true
+    } ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.controller.UzmanParaController",
+    "ad" : "UzmanParaController",
+    "paket" : "com.kmk.altyapi.borsaverialma.controller",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\controller\\UzmanParaController.java",
+    "tur" : "class",
+    "stereotip" : "controller",
+    "girisNoktasiMi" : true,
+    "anotasyonlar" : [ "@RestController", "@RequestMapping(\"/uzmanpara\")" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "uzmanParaService",
+      "tip" : "UzmanParaService",
+      "enjekte" : true
+    } ],
+    "metodlar" : [ {
+      "ad" : "getAllHisse",
+      "imza" : "getAllHisse()",
+      "donusTipi" : "ResponseEntity<UzmanParaHisseListObj>",
+      "parametreler" : [ ],
+      "anotasyonlar" : [ "@GetMapping", "@RequestMapping(\"/hisse\")" ],
+      "satir" : 25,
+      "girisNoktasiMi" : true
+    }, {
+      "ad" : "getDetay",
+      "imza" : "getDetay(UzmanParaDetayReq)",
+      "donusTipi" : "ResponseEntity<UzmanParaHisseDetay>",
+      "parametreler" : [ "UzmanParaDetayReq req" ],
+      "anotasyonlar" : [ "@PostMapping", "@RequestMapping(\"/detay\")" ],
+      "satir" : 36,
+      "girisNoktasiMi" : true
+    } ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.model.Fundamental",
+    "ad" : "Fundamental",
+    "paket" : "com.kmk.altyapi.borsaverialma.model",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\model\\Fundamental.java",
+    "tur" : "class",
+    "stereotip" : "model",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Data" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "beta",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "halkaAciklikOrani",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "bist100Agirligi",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "fkOrani",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "pdDd",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "dibeUzaklik",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "piyasaDegeriUsd",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "piyasaDegeriTl",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "netKar",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "ozsermaye",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "sermaye",
+      "tip" : "String",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.model.GeneralInfo",
+    "ad" : "GeneralInfo",
+    "paket" : "com.kmk.altyapi.borsaverialma.model",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\model\\GeneralInfo.java",
+    "tur" : "class",
+    "stereotip" : "model",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Data" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "alis",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "satis",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "netDegisim",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "taban",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "tavan",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "seans",
+      "tip" : "Seans",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.model.RowData",
+    "ad" : "RowData",
+    "paket" : "com.kmk.altyapi.borsaverialma.model",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\model\\RowData.java",
+    "tur" : "class",
+    "stereotip" : "model",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Data" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "symbol",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "href",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "price",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "percent",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "time",
+      "tip" : "String",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.model.Seans",
+    "ad" : "Seans",
+    "paket" : "com.kmk.altyapi.borsaverialma.model",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\model\\Seans.java",
+    "tur" : "class",
+    "stereotip" : "model",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Data" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "son1",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "son2",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "yuksek1",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "yuksek2",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "dusuk1",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "dusuk2",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "agirlikliOrtalama1",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "agirlikliOrtalama2",
+      "tip" : "String",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.model.StockDetail",
+    "ad" : "StockDetail",
+    "paket" : "com.kmk.altyapi.borsaverialma.model",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\model\\StockDetail.java",
+    "tur" : "class",
+    "stereotip" : "model",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Data" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "title",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "symbol",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "url",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "general",
+      "tip" : "GeneralInfo",
+      "enjekte" : false
+    }, {
+      "ad" : "technical",
+      "tip" : "TechnicalAnalysis",
+      "enjekte" : false
+    }, {
+      "ad" : "fundamental",
+      "tip" : "Fundamental",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.model.TechnicalAnalysis",
+    "ad" : "TechnicalAnalysis",
+    "paket" : "com.kmk.altyapi.borsaverialma.model",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\model\\TechnicalAnalysis.java",
+    "tur" : "class",
+    "stereotip" : "model",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Data" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "cci14",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "rsi14",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "movingAverage10",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "stochasticSlow5",
+      "tip" : "String",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.model.UzmanParaDetayReq",
+    "ad" : "UzmanParaDetayReq",
+    "paket" : "com.kmk.altyapi.borsaverialma.model",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\model\\UzmanParaDetayReq.java",
+    "tur" : "class",
+    "stereotip" : "dto",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Data" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "url",
+      "tip" : "String",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.model.UzmanParaHisse",
+    "ad" : "UzmanParaHisse",
+    "paket" : "com.kmk.altyapi.borsaverialma.model",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\model\\UzmanParaHisse.java",
+    "tur" : "class",
+    "stereotip" : "model",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Data" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "sembol",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "url",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "fiyat",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "degisim",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "zaman",
+      "tip" : "String",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.model.UzmanParaHisseDetay",
+    "ad" : "UzmanParaHisseDetay",
+    "paket" : "com.kmk.altyapi.borsaverialma.model",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\model\\UzmanParaHisseDetay.java",
+    "tur" : "class",
+    "stereotip" : "model",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Data" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "hisseAdi",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "sembol",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "url",
+      "tip" : "String",
+      "enjekte" : false
+    }, {
+      "ad" : "alis",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "satis",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "netDegisim",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "taban",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "tavan",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "son1",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "son2",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "yuksek1",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "yuksek2",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "dusuk1",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "dusuk2",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "agirlikliOrtalama1",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "agirlikliOrtalama2",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "cci14",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "rsi14",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "movingAverage10",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "stochasticSlow5",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "beta",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "halkaAciklikOrani",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "bist100Agirligi",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "fkOrani",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "pdDd",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "dibeUzaklik",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "piyasaDegeriUsd",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "piyasaDegeriTl",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "netKar",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "ozsermaye",
+      "tip" : "Double",
+      "enjekte" : false
+    }, {
+      "ad" : "sermaye",
+      "tip" : "Double",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ ]
+  }, {
+    "fqn" : "com.kmk.altyapi.borsaverialma.model.UzmanParaHisseListObj",
+    "ad" : "UzmanParaHisseListObj",
+    "paket" : "com.kmk.altyapi.borsaverialma.model",
+    "modul" : "borsaverialma",
+    "dosyaYolu" : "D:\\workspaces\\ai\\software-dev-agent\\pre_analyzer_3\\ornek-projeler\\borsaverialma\\src\\main\\java\\com\\kmk\\altyapi\\borsaverialma\\model\\UzmanParaHisseListObj.java",
+    "tur" : "class",
+    "stereotip" : "model",
+    "girisNoktasiMi" : false,
+    "anotasyonlar" : [ "@Data" ],
+    "kalitim" : [ ],
+    "arayuzler" : [ ],
+    "alanlar" : [ {
+      "ad" : "hisselist",
+      "tip" : "List<UzmanParaHisse>",
+      "enjekte" : false
+    } ],
+    "metodlar" : [ ]
+  } ]
+}
